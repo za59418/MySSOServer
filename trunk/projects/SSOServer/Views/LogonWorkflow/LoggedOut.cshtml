@@ -1,0 +1,86 @@
+﻿@model IdentityServer3.Core.ViewModels.LoggedOutViewModel
+@{
+	ViewBag.Title = "Logout";
+    Layout = null;
+}
+
+<script src="~/assets/js/jquery.min.js"></script>
+<link href="~/assets/css/loader-style.css" rel="stylesheet" />
+<link href="~/assets/css/bootstrap.css" rel="stylesheet" />
+<link href="~/assets/css/signin.css" rel="stylesheet" />
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<!-- Fav and touch icons -->
+<link rel="shortcut icon" href="~/assets/ico/minus.png">
+
+<div class="page-header">
+    <h1>&nbsp;</h1>
+</div>
+
+<div id="preloader">
+    <div id="status">&nbsp;</div>
+</div>
+
+<div class="container">
+    <div class="" id="login-wrapper">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div id="logo-login">
+                    <h1>
+                        SSO统一登陆页面
+                        <span>v1.0</span>
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="account-box" style="height:230px;">
+                    <p>已退出 @Model.SiteName</p>
+
+                    @* New logic ensuring a consistent message if we are logging out of any applications on the IdentityServer host *@
+                    @if (Model.RedirectUrl == null)
+                    {
+                        <div>
+                            点击 <a href="/">这里>>></a> 返回首页
+                        </div>
+                    }
+                    else
+                    {
+                        if (string.IsNullOrWhiteSpace(Model.RedirectUrl))
+                        {
+                            <div>
+                                点击 <a href="/">这里>>></a> 返回首页
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                点击 <a href="@Model.RedirectUrl">这里>>></a> 返回
+                                <span>@Model.ClientName</span> 
+                            </div>
+                        }
+                        foreach (var url in Model.IFrameUrls)
+                        {
+                            <iframe class="signout" src="@url" style="display: none"></iframe>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <p>&nbsp;</p>
+    <div style="text-align:center;margin:0 auto;">
+        <h6 style="color:#fff;">
+            Copyright(C)2017 chinadci.com All Rights Reserved<br />
+            广州城市信息研究所有限公司 版权所有
+        </h6>
+    </div>
+</div>
+
+@section scripts{
+    @Html.Partial("_RenderAngularModel")
+}
