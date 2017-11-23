@@ -1,0 +1,162 @@
+﻿@model IdentityServer3.Core.ViewModels.ConsentViewModel
+@{
+    ViewBag.Title = "Application Consent";
+    Layout = null;
+}
+
+<script src="~/assets/js/jquery.min.js"></script>
+<link href="~/assets/css/loader-style.css" rel="stylesheet" />
+<link href="~/assets/css/bootstrap.css" rel="stylesheet" />
+<link href="~/assets/css/signin.css" rel="stylesheet" />
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<!-- Fav and touch icons -->
+<link rel="shortcut icon" href="~/assets/ico/minus.png">
+
+<div class="page-header">
+    <h1>&nbsp;</h1>
+</div>
+
+<div id="preloader">
+    <div id="status">&nbsp;</div>
+</div>
+
+<div class="container">
+    <div class="" id="login-wrapper">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div id="logo-login">
+                    <h1>
+                        SSO统一登陆页面
+                        <span>v1.0</span>
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="account-box" style="height:auto;">
+                    <p>@Model.ClientName 请求您的授权</p>
+                    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong>
+                            @Model.ErrorMessage
+                        </div>
+                    }
+                    <form name="form" method="post" action="@Model.ConsentUrl" class="consent-form">
+                        <input type="hidden" name="@Model.AntiForgery.Name" value="@Model.AntiForgery.Value" />
+                        @if (Model.IdentityScopes.Any())
+                        {
+                            <div class="panel panel-default consent-buttons">
+                                <div class="panel-heading">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    个人信息
+                                </div>
+                                <ul class="list-group">
+                                    @foreach (var scope in Model.IdentityScopes)
+                                    {
+                                        <li class="list-group-item">
+                                            <label>
+                                                <input class="consent-scopecheck" type="checkbox" name="scopes" id="scopes_@scope.Name" value="@scope.Name" @(scope.Selected ? "checked='checked'" : "") @(scope.Required ? "disabled='disabled'" : "") />
+                                                <strong>@scope.DisplayName</strong>
+                                                @if (scope.Emphasize)
+                                                {
+                                                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                                }
+                                            </label>
+                                            @if (scope.Required)
+                                            {
+                                                <span><em>(required)</em></span>
+                                            }
+                                            @if (!string.IsNullOrWhiteSpace(scope.Description))
+                                            {
+                                                <div class="consent-description">
+                                                    <label for="scopes_@scope.Name">@scope.Description</label>
+                                                </div>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                        @if (Model.ResourceScopes.Any())
+                        {
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="glyphicon glyphicon-tasks"></span>
+                                    Application Access
+                                </div>
+                                <ul class="list-group">
+                                    @foreach (var scope in Model.ResourceScopes)
+                                    {
+                                        <li class="list-group-item">
+                                            <label>
+                                                <input class="consent-scopecheck" type="checkbox" name="scopes" id="scopes_@scope.Name" value="@scope.Name" @(scope.Selected ? "checked='checked'" : "") @(scope.Required ? "disabled='disabled'" : "") />
+                                                <strong>@(!string.IsNullOrWhiteSpace(scope.DisplayName) ? scope.DisplayName : scope.Description)</strong>
+                                                @if (scope.Emphasize)
+                                                {
+                                                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                                }
+                                            </label>
+                                            @if (scope.Required)
+                                            {
+                                                <span><em>(required)</em></span>
+                                            }
+                                            @if ((!string.IsNullOrWhiteSpace(scope.Description) && !string.IsNullOrWhiteSpace(scope.DisplayName)) || scope.Required)
+                                            {
+                                                <div class="consent-description">
+                                                    @if (scope.Required)
+                                                    {
+                                                        <span><em>(required)</em></span>
+                                                    }
+                                                    @if (!string.IsNullOrWhiteSpace(scope.DisplayName))
+                                                    {
+                                                        <label for="scopes_@scope.Name">@scope.Description</label>
+                                                    }
+                                                </div>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                        @if (Model.AllowRememberConsent)
+                        {
+                            <div class="consent-remember">
+                                <label>
+                                    <input class="consent-scopecheck" type="checkbox" name="RememberConsent" value="true" @(Model.RememberConsent ? "checked='checked'" : "") />
+                                    <strong>记住我的决定</strong>
+                                </label>
+                            </div>
+                        }
+                        <div class="consent-buttons">
+                            <button name="button" value="yes" class="btn btn-primary" autofocus>同意</button>
+                            <button name="button" value="no" class="btn">不同意</button>
+                            @if (!string.IsNullOrWhiteSpace(Model.ClientUrl))
+                            {
+                                <a class="pull-right btn btn-default" target="_blank" href="@Model.ClientUrl">
+                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                    <strong>@Model.ClientName</strong>
+                                </a>
+                            }
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p>&nbsp;</p>
+    <div style="text-align:center;margin:0 auto;">
+        <h6 style="color:#fff;">
+            Copyright(C)2017 chinadci.com All Rights Reserved<br />
+            广州城市信息研究所有限公司 版权所有
+        </h6>
+    </div>
+</div>
+
+@section scripts{
+    @Html.Partial("_RenderAngularModel")
+}
