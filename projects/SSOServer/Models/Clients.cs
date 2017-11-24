@@ -144,7 +144,7 @@ namespace SSOServer
                 /////////////////////////////////////////////////////////////
                 new Client
                 {
-                    ClientName = "JavaScript Implicit Client - Simple",
+                    ClientName = "jsClient",
                     ClientId = "js.simple",
                     Flow = Flows.Implicit,
 
@@ -161,7 +161,7 @@ namespace SSOServer
 
                     RedirectUris = new List<string>
                     {
-                        "http://localhost:37045/index.html",
+                        "http://localhost/jsClient/index.html",
                     },
                 },
                 
