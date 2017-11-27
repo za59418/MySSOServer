@@ -19,6 +19,8 @@ using IdentityModel.Client;
 using IdentityServer3.Core.Models;
 using System.Threading.Tasks;
 using System.Web;
+using System.Net;
+using System.Net.Security;
 
 [assembly: OwinStartup(typeof(SSOServer.Startup))]
 namespace SSOServer
@@ -47,12 +49,15 @@ namespace SSOServer
                 factory.Register(new Registration<HttpServerUtilityBase>(resolver => resolver.Resolve<HttpContextBase>().Server));
                 factory.Register(new Registration<HttpSessionStateBase>(resolver => resolver.Resolve<HttpContextBase>().Session));
 
+
                 idsrvApp.UseIdentityServer(new IdentityServerOptions
                 {
                     SiteName = "SSO 单点登陆系统",
                     SigningCertificate = LoadCertificate(),
                     Factory = factory
                 });
+                //证书处理
+                ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidate;
             });
 
             app.UseResourceAuthorization(new AuthorizationManager());
@@ -64,10 +69,10 @@ namespace SSOServer
 
             app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
             {
-                Authority = "https://localhost:44319/identity",
+                Authority = "https://192.168.1.115:44319/identity",
                 ClientId = "mvc",
                 Scope = "openid profile roles",
-                RedirectUri = "https://localhost:44319/",
+                RedirectUri = "https://192.168.1.115:44319/",
                 ResponseType = "id_token",
 
                 SignInAsAuthenticationType = "Cookies",
@@ -113,6 +118,12 @@ namespace SSOServer
         {
             return new X509Certificate2(
                 string.Format(@"{0}\bin\identityServer\idsrv3test.pfx", AppDomain.CurrentDomain.BaseDirectory), "idsrv3test");
+        }
+
+        //证书处理
+        private static bool RemoteCertificateValidate(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors error)
+        {
+            return true;
         }
     }
 }

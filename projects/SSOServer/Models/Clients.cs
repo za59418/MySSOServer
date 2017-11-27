@@ -156,12 +156,36 @@ namespace SSOServer
 
                     ClientUri = "https://identityserver.io",
 
-                    RequireConsent = true,
+                    RequireConsent = false,
                     AllowRememberConsent = true,
 
                     RedirectUris = new List<string>
                     {
                         "http://localhost/jsClient/index.html",
+                    },
+                },
+
+                //62CLIENT
+                new Client
+                {
+                    ClientName = "jsClient",
+                    ClientId = "js.simple62",
+                    Flow = Flows.Implicit,
+
+                    AllowedScopes = new List<string>
+                    {
+                        "read",
+                        "write"
+                    },
+
+                    ClientUri = "https://identityserver.io",
+
+                    RequireConsent = false,
+                    AllowRememberConsent = true,
+
+                    RedirectUris = new List<string>
+                    {
+                        "http://192.168.1.62/jsClient/index.html",
                     },
                 },
                 
@@ -366,7 +390,7 @@ namespace SSOServer
 
                     RedirectUris = new List<string>
                     {
-                        "https://localhost:44312/callback",
+                        "http://localhost/mvcclient",
                     },
 
                     AllowedScopes = new List<string>
@@ -502,7 +526,7 @@ namespace SSOServer
 
                     RedirectUris = new List<string>
                     {
-                        "https://localhost:44319/"
+                        "https://192.168.1.115:44319/"
                     },
 
                     AllowAccessToAllScopes = true
