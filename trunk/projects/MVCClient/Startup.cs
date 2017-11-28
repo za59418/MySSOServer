@@ -21,7 +21,7 @@ namespace MVCClient
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                AuthenticationType = "TempState",
+                AuthenticationType = "TempCookie",
                 AuthenticationMode = AuthenticationMode.Passive
             });
         }

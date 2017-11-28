@@ -165,6 +165,53 @@ namespace SSOServer
                     },
                 },
 
+
+                //sso js Client
+                new Client
+                {
+                    ClientName = "jsClient",
+                    ClientId = "jsClient",
+                    Flow = Flows.Implicit,
+
+                    AllowedScopes = new List<string>
+                    {
+                        Constants.StandardScopes.OpenId
+                    },
+
+                    ClientUri = "https://identityserver.io",
+
+                    RequireConsent = false,
+                    AllowRememberConsent = true,
+
+                    RedirectUris = new List<string>
+                    {
+                        "http://localhost/jsClient/index.html",
+                    },
+                },
+
+                //sso mvc Client
+                new Client
+                {
+                    ClientName = "mvcClient",
+                    ClientId = "mvcClient",
+                    Flow = Flows.Implicit,
+
+                    AllowedScopes = new List<string>
+                    {
+                        Constants.StandardScopes.OpenId
+                    },
+
+                    ClientUri = "https://identityserver.io",
+
+                    RequireConsent = false,
+                    AllowRememberConsent = true,
+
+                    RedirectUris = new List<string>
+                    {
+                        "http://localhost/mvcClient/Home/SignInCallback",
+                    },
+                },
+
                 //62CLIENT
                 new Client
                 {
@@ -428,12 +475,12 @@ namespace SSOServer
 
                     ClientUri = "https://identityserver.io",
 
-                    RequireConsent = true,
+                    RequireConsent = false,
                     AllowRememberConsent = true,
 
                     RedirectUris = new List<string>
                     {
-                        "http://localhost:11716/account/signInCallback",
+                        "http://localhost/MVCClient/Home/SignInCallback",
                     },
                 },
 
