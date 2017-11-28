@@ -12,11 +12,11 @@
         }
 
         if (!token) {
-            var authorizationUrl = 'https://localhost:44319/identity/connect/authorize';
-            var client_id = 'js.simple';
+            var authorizationUrl = 'https://192.168.1.115:44319/identity/connect/authorize';
+            var client_id = 'jsClient';
             var redirect_uri = 'http://localhost/jsClient/index.html';
-            var response_type = "token";
-            var scope = "read";
+            var response_type = "id_token";
+            var scope = "openid";
             var state = Date.now() + "" + Math.random();
 
             var url =
