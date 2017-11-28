@@ -22,13 +22,13 @@ namespace MVCClient.Controllers
             var nonce = Guid.NewGuid().ToString("N");
             SetTempState(state, nonce);
 
-            var request = new AuthorizeRequest("https://localhost:44319/identity/connect/authorize");
+            var request = new AuthorizeRequest("https://192.168.1.115:44319/identity/connect/authorize");
 
             var url = request.CreateAuthorizeUrl(
                 clientId: "codeclient",
                 responseType: "code",
                 scope: scopes,
-                redirectUri: "https://localhost:44312/callback",
+                redirectUri: "http://localhost/MVCClient",
                 state: state,
                 nonce: nonce);
 

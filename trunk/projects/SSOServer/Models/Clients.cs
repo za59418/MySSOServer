@@ -383,7 +383,7 @@ namespace SSOServer
                         new Secret("secret".Sha256())
                     },
 
-                    RequireConsent = true,
+                    RequireConsent = false,
                     AllowRememberConsent = true,
 
                     ClientUri = "https://identityserver.io",
