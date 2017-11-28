@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 
-namespace MvcCodeFlowClientManual.Controllers
+namespace MVCClient.Controllers
 {
     public class HomeController : Controller
     {
@@ -22,15 +22,15 @@ namespace MvcCodeFlowClientManual.Controllers
             var nonce = Guid.NewGuid().ToString("N");
             SetTempState(state, nonce);
 
-            var request = new AuthorizeRequest("https://192.168.1.115:44319/identity/connect/authorize");
-            
+            var request = new AuthorizeRequest("https://localhost:44319/identity/connect/authorize");
+
             var url = request.CreateAuthorizeUrl(
-                clientId:     "codeclient",
+                clientId: "codeclient",
                 responseType: "code",
-                scope:        scopes,
-                redirectUri:  "http://localhost/MVCClient",
-                state:        state,
-                nonce:        nonce);
+                scope: scopes,
+                redirectUri: "https://localhost:44312/callback",
+                state: state,
+                nonce: nonce);
 
             return Redirect(url);
         }
