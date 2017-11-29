@@ -144,7 +144,7 @@ namespace SSOServer
                 /////////////////////////////////////////////////////////////
                 new Client
                 {
-                    ClientName = "jsClient",
+                    ClientName = "js.simple",
                     ClientId = "js.simple",
                     Flow = Flows.Implicit,
 
@@ -161,11 +161,11 @@ namespace SSOServer
 
                     RedirectUris = new List<string>
                     {
-                        "http://localhost/jsClient/index.html",
+                        "http://localhost/sso3/index.html",
                     },
                 },
 
-
+                #region 测试
                 //sso js Client
                 new Client
                 {
@@ -175,7 +175,7 @@ namespace SSOServer
 
                     AllowedScopes = new List<string>
                     {
-                        Constants.StandardScopes.OpenId
+                        "logon"
                     },
 
                     ClientUri = "https://identityserver.io",
@@ -215,7 +215,7 @@ namespace SSOServer
                 //62CLIENT
                 new Client
                 {
-                    ClientName = "jsClient",
+                    ClientName = "js.simple62",
                     ClientId = "js.simple62",
                     Flow = Flows.Implicit,
 
@@ -235,7 +235,8 @@ namespace SSOServer
                         "http://192.168.1.62/jsClient/index.html",
                     },
                 },
-                
+                #endregion 测试
+
                 /////////////////////////////////////////////////////////////
                 // JavaScript Implicit Client - Manual
                 /////////////////////////////////////////////////////////////
@@ -255,17 +256,17 @@ namespace SSOServer
 
                     ClientUri = "https://identityserver.io",
 
-                    RequireConsent = true,
+                    RequireConsent = false,
                     AllowRememberConsent = true,
 
                     RedirectUris = new List<string>
                     {
-                        "http://localhost:37046/index.html",
+                        "http://localhost/sso1/index.html",
                     },
 
                     AllowedCorsOrigins = new List<string>
                     {
-                        "http://localhost:37046"
+                        "http://localhost/sso1"
                     }
                 },
 
@@ -437,7 +438,7 @@ namespace SSOServer
 
                     RedirectUris = new List<string>
                     {
-                        "http://localhost/mvcclient",
+                        "http://localhost/sso2/callback",
                     },
 
                     AllowedScopes = new List<string>
@@ -480,7 +481,7 @@ namespace SSOServer
 
                     RedirectUris = new List<string>
                     {
-                        "http://localhost/MVCClient/Home/SignInCallback",
+                        "http://localhost/sso4/account/signInCallback",
                     },
                 },
 
