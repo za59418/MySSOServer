@@ -28,6 +28,18 @@ namespace SSOServer
 
                     new Scope
                     {
+                        Name = "logon",
+                        DisplayName = "登陆",
+                        Type = ScopeType.Resource,
+                        Emphasize = false,
+
+                        ScopeSecrets = new List<Secret>
+                        {
+                            new Secret("secret".Sha256())
+                        }
+                    },
+                    new Scope
+                    {
                         Name = "read",
                         DisplayName = "Read data",
                         Type = ScopeType.Resource,
