@@ -589,6 +589,37 @@ namespace SSOServer
                     }
                 },
 
+                //62webform
+                new Client
+                {
+                    ClientName = "WebFormClient",
+                    ClientId = "webformClient62",
+                    Flow = Flows.Implicit,
+
+                    AllowedScopes = new List<string>
+                    {
+                        Constants.StandardScopes.OpenId,
+                        Constants.StandardScopes.Profile,
+                        Constants.StandardScopes.Email,
+                        Constants.StandardScopes.Roles,
+                        Constants.StandardScopes.Address,
+                    },
+
+                    ClientUri = "https://identityserver.io",
+
+                    RequireConsent = true,
+                    AllowRememberConsent = true,
+
+                    RedirectUris = new List<string>
+                    {
+                        "http://192.168.1.62/webformClient/"
+                    },
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        "http://192.168.1.62/webformClient/"
+                    }
+                },
+
                 //62CLIENT
                 new Client
                 {
