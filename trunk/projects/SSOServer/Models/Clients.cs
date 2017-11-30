@@ -102,7 +102,7 @@ namespace SSOServer
                     RedirectUris = new List<string>
                     {
                         "oob://localhost/wpf.webview.client",
-                    },
+                    }
                 },
 
                 
@@ -162,80 +162,9 @@ namespace SSOServer
                     RedirectUris = new List<string>
                     {
                         "http://localhost/sso3/index.html",
-                    },
+                    }
                 },
 
-                #region 测试
-                //sso js Client
-                new Client
-                {
-                    ClientName = "jsClient",
-                    ClientId = "jsClient",
-                    Flow = Flows.Implicit,
-
-                    AllowedScopes = new List<string>
-                    {
-                        "logon"
-                    },
-
-                    ClientUri = "https://identityserver.io",
-
-                    RequireConsent = false,
-                    AllowRememberConsent = true,
-
-                    RedirectUris = new List<string>
-                    {
-                        "http://localhost/jsClient/index.html",
-                    },
-                },
-
-                //sso mvc Client
-                new Client
-                {
-                    ClientName = "mvcClient",
-                    ClientId = "mvcClient",
-                    Flow = Flows.Implicit,
-
-                    AllowedScopes = new List<string>
-                    {
-                        Constants.StandardScopes.OpenId
-                    },
-
-                    ClientUri = "https://identityserver.io",
-
-                    RequireConsent = false,
-                    AllowRememberConsent = true,
-
-                    RedirectUris = new List<string>
-                    {
-                        "http://localhost/mvcClient/Home/SignInCallback",
-                    },
-                },
-
-                //62CLIENT
-                new Client
-                {
-                    ClientName = "js.simple62",
-                    ClientId = "js.simple62",
-                    Flow = Flows.Implicit,
-
-                    AllowedScopes = new List<string>
-                    {
-                        "read",
-                        "write"
-                    },
-
-                    ClientUri = "https://identityserver.io",
-
-                    RequireConsent = false,
-                    AllowRememberConsent = true,
-
-                    RedirectUris = new List<string>
-                    {
-                        "http://192.168.1.62/jsClient/index.html",
-                    },
-                },
-                #endregion 测试
 
                 /////////////////////////////////////////////////////////////
                 // JavaScript Implicit Client - Manual
@@ -328,26 +257,26 @@ namespace SSOServer
                     Flow = Flows.ClientCredentials,
 
                     ClientSecrets = new List<Secret>
+                    {
+                        new Secret("secret".Sha256()),
+                        new Secret
                         {
-                            new Secret("secret".Sha256()),
-                            new Secret
-                            {
-                                Value = "61B754C541BBCFC6A45A9E9EC5E47D8702B78C29",
-                                Type = Constants.SecretTypes.X509CertificateThumbprint,
-                                Description = "Client Certificate"
-                            },
+                            Value = "61B754C541BBCFC6A45A9E9EC5E47D8702B78C29",
+                            Type = Constants.SecretTypes.X509CertificateThumbprint,
+                            Description = "Client Certificate"
                         },
+                    },
 
                     AllowedScopes = new List<string>
-                        {
-                            "read",
-                            "write"
-                        },
+                    {
+                        "read",
+                        "write"
+                    },
 
                     Claims = new List<Claim>
-                        {
-                            new Claim("location", "datacenter")
-                        }
+                    {
+                        new Claim("location", "datacenter")
+                    }
                 },
                 
                 /////////////////////////////////////////////////////////////
@@ -397,7 +326,7 @@ namespace SSOServer
                         "read",
                         "write",
                         "address",
-                        "offline_access"
+                        "offline_access" 
                     },
 
                     // used by JS resource owner sample
@@ -452,7 +381,7 @@ namespace SSOServer
                         "write"
                     },
 
-                    AccessTokenType = AccessTokenType.Reference,
+                    AccessTokenType = AccessTokenType.Reference
                 },
                 /////////////////////////////////////////////////////////////
                 // MVC No Library Client
@@ -482,7 +411,7 @@ namespace SSOServer
                     RedirectUris = new List<string>
                     {
                         "http://localhost/sso4/account/signInCallback",
-                    },
+                    }
                 },
 
                 /////////////////////////////////////////////////////////////
@@ -561,7 +490,7 @@ namespace SSOServer
                     },
 
                     LogoutUri = "https://localhost:44301/Home/SignoutCleanup",
-                    LogoutSessionRequired = true,
+                    LogoutSessionRequired = true
                 },
 
 
@@ -572,13 +501,119 @@ namespace SSOServer
                     ClientId = "mvc",
                     Flow = Flows.Implicit,
 
+                    RequireConsent = false,
+
                     RedirectUris = new List<string>
                     {
                         "https://192.168.1.115:44319/"
                     },
 
                     AllowAccessToAllScopes = true
+                },
+
+
+                #region 测试
+                //sso js Client
+                new Client
+                {
+                    ClientName = "jsClient",
+                    ClientId = "jsClient",
+                    Flow = Flows.Implicit,
+
+                    AllowedScopes = new List<string>
+                    {
+                        "logon"
+                    },
+
+                    ClientUri = "https://identityserver.io",
+
+                    RequireConsent = false,
+                    AllowRememberConsent = true,
+
+                    RedirectUris = new List<string>
+                    {
+                        "http://localhost/jsClient/index.html",
+                    }
+                },
+
+                //sso mvc Client
+                new Client
+                {
+                    ClientName = "mvcClient",
+                    ClientId = "mvcClient",
+                    Flow = Flows.Implicit,
+
+                    AllowedScopes = new List<string>
+                    {
+                        Constants.StandardScopes.OpenId
+                    },
+
+                    ClientUri = "https://identityserver.io",
+
+                    RequireConsent = false,
+                    AllowRememberConsent = true,
+
+                    RedirectUris = new List<string>
+                    {
+                        "http://localhost/mvcClient/Home/SignInCallback",
+                    }
+                },
+
+                new Client
+                {
+                    ClientName = "WebFormClient",
+                    ClientId = "webFormClient",
+                    Flow = Flows.Implicit,
+
+                    AllowedScopes = new List<string>
+                    {
+                        Constants.StandardScopes.OpenId,
+                        Constants.StandardScopes.Profile,
+                        Constants.StandardScopes.Email,
+                        Constants.StandardScopes.Roles,
+                        Constants.StandardScopes.Address,
+                    },
+
+                    ClientUri = "https://identityserver.io",
+
+                    RequireConsent = true,
+                    AllowRememberConsent = true,
+
+                    RedirectUris = new List<string>
+                    {
+                        "http://localhost/webFormClient/"
+                    },
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        "http://localhost/webFormClient/"
+                    }
+                },
+
+                //62CLIENT
+                new Client
+                {
+                    ClientName = "js.simple62",
+                    ClientId = "js.simple62",
+                    Flow = Flows.Implicit,
+
+                    AllowedScopes = new List<string>
+                    {
+                        "read",
+                        "write"
+                    },
+
+                    ClientUri = "https://identityserver.io",
+
+                    RequireConsent = false,
+                    AllowRememberConsent = true,
+
+                    RedirectUris = new List<string>
+                    {
+                        "http://192.168.1.62/jsClient/index.html",
+                    }
                 }
+                #endregion 测试
+
             };
         }
     }
