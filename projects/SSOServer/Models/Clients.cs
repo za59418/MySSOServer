@@ -562,7 +562,7 @@ namespace SSOServer
                 new Client
                 {
                     ClientName = "WebFormClient",
-                    ClientId = "webFormClient",
+                    ClientId = "webformClient",
                     Flow = Flows.Implicit,
 
                     AllowedScopes = new List<string>
@@ -581,11 +581,11 @@ namespace SSOServer
 
                     RedirectUris = new List<string>
                     {
-                        "http://localhost/webFormClient/"
+                        "http://localhost/webformClient/"
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
-                        "http://localhost/webFormClient/"
+                        "http://localhost/webformClient/"
                     }
                 },
 
