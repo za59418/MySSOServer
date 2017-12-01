@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCClient", "projects\MVCCl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebformClient", "projects\WebformClient\WebformClient.csproj", "{E62FB2A2-DE0B-4210-9CBC-AAE07AAFD75B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCI.SSO.ClientLib", "projects\DCI.SSO.ClientLib\DCI.SSO.ClientLib.csproj", "{734B3625-A6EC-4997-81A5-1019D5AF2569}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{E62FB2A2-DE0B-4210-9CBC-AAE07AAFD75B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E62FB2A2-DE0B-4210-9CBC-AAE07AAFD75B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E62FB2A2-DE0B-4210-9CBC-AAE07AAFD75B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{734B3625-A6EC-4997-81A5-1019D5AF2569}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{734B3625-A6EC-4997-81A5-1019D5AF2569}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{734B3625-A6EC-4997-81A5-1019D5AF2569}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{734B3625-A6EC-4997-81A5-1019D5AF2569}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
