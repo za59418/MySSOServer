@@ -4,9 +4,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
 	<meta charset="utf-8" />
-    <script src="sso.min.js"></script>
+    <script src="dci.sso.min.js"></script>
     <script type="text/javascript">
-        var sso = new DCISSO();
+        var sso = new DCISSO(
+            'jsClient',
+            'https://192.168.1.115:44319/identity',
+            'http://localhost/jsClient/index.html'
+        );
         sso.login();
     </script>
 </head>

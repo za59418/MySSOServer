@@ -1,8 +1,11 @@
-﻿function DCISSO() {
+﻿DCISSO = function (clientId, serverUrl, clientUrl) {
 
     var $this = this;
-
     this.token = null;
+
+    this.clientId = clientId; //'jsClient'
+    this.serverUrl = serverUrl; // https://192.168.1.115:44319/identity
+    this.clientUrl = clientUrl; // http://localhost/jsClient/index.html
 
     this.login = function () {
         if (window.location.hash) {
@@ -10,17 +13,15 @@
         }
 
         if (!$this.token) {
-            var authorizationUrl = 'https://192.168.1.115:44319/identity/connect/authorize';
-            var client_id = 'jsClient';
-            var redirect_uri = 'http://localhost/jsClient/index.html';
+            var authorizationUrl = this.serverUrl + '/connect/authorize';
             var response_type = "token";
             var scope = "logon";
             var state = Date.now() + "" + Math.random();
 
             var url =
             authorizationUrl + "?" +
-            "client_id=" + encodeURI(client_id) + "&" +
-            "redirect_uri=" + encodeURI(redirect_uri) + "&" +
+            "client_id=" + encodeURI(this.clientId) + "&" +
+            "redirect_uri=" + encodeURI(this.clientUrl) + "&" +
             "response_type=" + encodeURI(response_type) + "&" +
             "scope=" + encodeURI(scope) + "&" +
             "state=" + encodeURI(state);
@@ -42,6 +43,6 @@
     };
 
     this.logout = function () {
-        window.location = "https://192.168.1.115:44319/identity/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(window.location.protocol + "//" + window.location.host + "/index.html") + "&id_token_hint=" + encodeURIComponent($this.token);
+        window.location = this.serverUrl + "/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(window.location.protocol + "//" + window.location.host + "/index.html") + "&id_token_hint=" + encodeURIComponent($this.token);
     };
 }
