@@ -1,0 +1,895 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DEPARTMENT">
+          <Key>
+            <PropertyRef Name="DEPARTMENTID" />
+          </Key>
+          <Property Name="DEPARTMENTID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DEPARTMENTNAME" Type="varchar2" MaxLength="50" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="256" />
+          <Property Name="DEPARTMENTPARENTID" Type="varchar2" MaxLength="50" />
+          <Property Name="SINDEX" Type="number" Precision="38" Scale="0" />
+          <Property Name="EXTRAID" Type="varchar2" MaxLength="50" />
+          <Property Name="EXTRAPID" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="FUNCTIONINFO">
+          <Key>
+            <PropertyRef Name="FUNCTIONID" />
+          </Key>
+          <Property Name="FUNCTIONID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="FUNCTIONNAME" Type="varchar2" MaxLength="50" />
+          <Property Name="DISPLAYNAME" Type="varchar2" MaxLength="50" />
+          <Property Name="FUNCTIONTYPEID" Type="number" Precision="38" Scale="0" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="256" />
+          <Property Name="EXECUTE" Type="varchar2" MaxLength="50" />
+          <Property Name="CLSNAME" Type="varchar2" MaxLength="50" />
+          <Property Name="SINDEX" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="FUNCTIONTYPE">
+          <Key>
+            <PropertyRef Name="FUNCTIONTYPEID" />
+          </Key>
+          <Property Name="FUNCTIONTYPEID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="FUNCTIONTYPENAME" Type="varchar2" MaxLength="50" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="256" />
+          <Property Name="CLSNAME" Type="varchar2" MaxLength="50" />
+          <Property Name="SINDEX" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="LOGIN_LOG">
+          <Key>
+            <PropertyRef Name="LOGID" />
+          </Key>
+          <Property Name="LOGID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="VISITTIME" Type="date" />
+          <Property Name="STATUS" Type="varchar2" MaxLength="100" />
+          <Property Name="EXCEPTION" Type="varchar2" MaxLength="200" />
+          <Property Name="USERID" Type="varchar2" MaxLength="20" />
+          <Property Name="USERNAME" Type="varchar2" MaxLength="50" />
+          <Property Name="DEPARTMENTID" Type="varchar2" MaxLength="20" />
+          <Property Name="DEPARTMENTNAME" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MAPLEVEL">
+          <Key>
+            <PropertyRef Name="LEVELID" />
+          </Key>
+          <Property Name="LEVELID" Type="number" Precision="20" Scale="0" Nullable="false" />
+          <Property Name="LON" Type="number" Precision="8" Scale="5" />
+          <Property Name="LAT" Type="number" Precision="8" Scale="5" />
+          <Property Name="LEVEL" Type="number" Precision="38" Scale="0" />
+          <Property Name="ALT" Type="number" Precision="10" Scale="5" />
+          <Property Name="MAPLEVEL" Type="number" Precision="8" Scale="5" />
+          <Property Name="NAME" Type="varchar2" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="ROLE_FUNCTION">
+          <Key>
+            <PropertyRef Name="ROLEID" />
+            <PropertyRef Name="FUNCTIONID" />
+          </Key>
+          <Property Name="ROLEID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="FUNCTIONID" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ROLEINFO">
+          <Key>
+            <PropertyRef Name="ROLEID" />
+          </Key>
+          <Property Name="ROLEID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ROLEPARENTID" Type="number" Precision="38" Scale="0" />
+          <Property Name="ROLENAME" Type="varchar2" MaxLength="50" />
+          <Property Name="DISPLAYNAME" Type="varchar2" MaxLength="100" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="256" />
+          <Property Name="SINDEX" Type="number" Precision="38" Scale="0" />
+          <Property Name="ROLETYPEID" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="ROLETYPE">
+          <Key>
+            <PropertyRef Name="ROLETYPEID" />
+          </Key>
+          <Property Name="ROLETYPEID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ROLETYPENAME" Type="varchar2" MaxLength="50" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="256" />
+          <Property Name="PARENTID" Type="number" Precision="38" Scale="0" />
+          <Property Name="SINDEX" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="SYSTEMINFO">
+          <Key>
+            <PropertyRef Name="SYSTEMID" />
+          </Key>
+          <Property Name="SYSTEMID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="CLIENTID" Type="varchar2" MaxLength="20" />
+          <Property Name="CLIENTNAME" Type="varchar2" MaxLength="200" />
+          <Property Name="FLOW" Type="varchar2" MaxLength="20" />
+          <Property Name="CLIENTSECRETS" Type="varchar2" MaxLength="20" />
+          <Property Name="REDIRECTURIS" Type="varchar2" MaxLength="100" />
+          <Property Name="ALLOWEDSCOPES" Type="varchar2" MaxLength="100" />
+          <Property Name="ACCESSTOKENTYPE" Type="varchar2" MaxLength="20" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="200" />
+          <Property Name="CLIENTURI" Type="varchar2" MaxLength="100" />
+          <Property Name="REQUIRECONSENT" Type="varchar2" MaxLength="20" />
+          <Property Name="ALLOWREMEMBERCONSENT" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="USER_DEPARTMENT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="USERID" Type="number" Precision="38" Scale="0" />
+          <Property Name="DEPARTMENTID" Type="number" Precision="38" Scale="0" />
+          <Property Name="EXTRAUSERID" Type="varchar2" MaxLength="50" />
+          <Property Name="EXTRADEPARTMENTID" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="USER_ROLE">
+          <Key>
+            <PropertyRef Name="USERID" />
+            <PropertyRef Name="ROLEID" />
+          </Key>
+          <Property Name="USERID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ROLEID" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USERINFO">
+          <Key>
+            <PropertyRef Name="USERID" />
+          </Key>
+          <Property Name="USERID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="USERNAME" Type="varchar2" MaxLength="50" />
+          <Property Name="PASSWORD" Type="varchar2" MaxLength="100" />
+          <Property Name="DISPLAYNAME" Type="varchar2" MaxLength="100" />
+          <Property Name="SHORTNAME" Type="varchar2" MaxLength="50" />
+          <Property Name="USERTYPEID" Type="number" Precision="38" Scale="0" />
+          <Property Name="CREATETIME" Type="varchar2" MaxLength="100" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="256" />
+          <Property Name="ISLOCKEDOUT" Type="number" Precision="1" Scale="0" />
+          <Property Name="EMAIL" Type="varchar2" MaxLength="50" />
+          <Property Name="NICKNAME" Type="varchar2" MaxLength="50" />
+          <Property Name="UPDATETIME" Type="varchar2" MaxLength="100" />
+          <Property Name="WEIGHT" Type="number" Precision="38" Scale="0" />
+          <Property Name="USERIMAGES" Type="nvarchar2" MaxLength="100" />
+          <Property Name="SINDEX" Type="number" Precision="38" Scale="0" />
+          <Property Name="EXTRAID" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“HXXF.USERLEVEL”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="USERLEVEL">
+          <Key>
+            <PropertyRef Name="USERID" />
+          </Key>
+          <Property Name="USERID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="LEVELID" Type="number" Precision="20" Scale="0" />
+        </EntityType>
+        <EntityType Name="USERTYPE">
+          <Key>
+            <PropertyRef Name="USERTYPEID" />
+          </Key>
+          <Property Name="USERTYPEID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="TYPENAME" Type="varchar2" MaxLength="50" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="256" />
+        </EntityType>
+        <Association Name="FK_FUNCTIONINFO_FUNCTIONTYPEID">
+          <End Role="FUNCTIONTYPE" Type="Self.FUNCTIONTYPE" Multiplicity="0..1" />
+          <End Role="FUNCTIONINFO" Type="Self.FUNCTIONINFO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FUNCTIONTYPE">
+              <PropertyRef Name="FUNCTIONTYPEID" />
+            </Principal>
+            <Dependent Role="FUNCTIONINFO">
+              <PropertyRef Name="FUNCTIONTYPEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ROLEFUNCTION_FUNCTIONID">
+          <End Role="FUNCTIONINFO" Type="Self.FUNCTIONINFO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ROLE_FUNCTION" Type="Self.ROLE_FUNCTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FUNCTIONINFO">
+              <PropertyRef Name="FUNCTIONID" />
+            </Principal>
+            <Dependent Role="ROLE_FUNCTION">
+              <PropertyRef Name="FUNCTIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ROLEFUNCTION_ROLEID">
+          <End Role="ROLEINFO" Type="Self.ROLEINFO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ROLE_FUNCTION" Type="Self.ROLE_FUNCTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLEINFO">
+              <PropertyRef Name="ROLEID" />
+            </Principal>
+            <Dependent Role="ROLE_FUNCTION">
+              <PropertyRef Name="ROLEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ROLEINFO_ROLETYPEID">
+          <End Role="ROLETYPE" Type="Self.ROLETYPE" Multiplicity="0..1" />
+          <End Role="ROLEINFO" Type="Self.ROLEINFO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLETYPE">
+              <PropertyRef Name="ROLETYPEID" />
+            </Principal>
+            <Dependent Role="ROLEINFO">
+              <PropertyRef Name="ROLETYPEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USERDEPARTMENT_DEPARTMENTID">
+          <End Role="DEPARTMENT" Type="Self.DEPARTMENT" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="USER_DEPARTMENT" Type="Self.USER_DEPARTMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTMENT">
+              <PropertyRef Name="DEPARTMENTID" />
+            </Principal>
+            <Dependent Role="USER_DEPARTMENT">
+              <PropertyRef Name="DEPARTMENTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USERDEPARTMENT_USERID">
+          <End Role="USERINFO" Type="Self.USERINFO" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="USER_DEPARTMENT" Type="Self.USER_DEPARTMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERINFO">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="USER_DEPARTMENT">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USERINFO_USERTYPEID">
+          <End Role="USERTYPE" Type="Self.USERTYPE" Multiplicity="0..1" />
+          <End Role="USERINFO" Type="Self.USERINFO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERTYPE">
+              <PropertyRef Name="USERTYPEID" />
+            </Principal>
+            <Dependent Role="USERINFO">
+              <PropertyRef Name="USERTYPEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USERLEVE_REFERENCE_MAPLEVEL">
+          <End Role="MAPLEVEL" Type="Self.MAPLEVEL" Multiplicity="0..1" />
+          <End Role="USERLEVEL" Type="Self.USERLEVEL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAPLEVEL">
+              <PropertyRef Name="LEVELID" />
+            </Principal>
+            <Dependent Role="USERLEVEL">
+              <PropertyRef Name="LEVELID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USERLEVE_REFERENCE_USERINFO">
+          <End Role="USERINFO" Type="Self.USERINFO" Multiplicity="1" />
+          <End Role="USERLEVEL" Type="Self.USERLEVEL" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="USERINFO">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="USERLEVEL">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USERROLE_ROLEID">
+          <End Role="ROLEINFO" Type="Self.ROLEINFO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="USER_ROLE" Type="Self.USER_ROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLEINFO">
+              <PropertyRef Name="ROLEID" />
+            </Principal>
+            <Dependent Role="USER_ROLE">
+              <PropertyRef Name="ROLEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USERROLE_USERID">
+          <End Role="USERINFO" Type="Self.USERINFO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="USER_ROLE" Type="Self.USER_ROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERINFO">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="USER_ROLE">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="DEPARTMENT" EntityType="Self.DEPARTMENT" Schema="HXXF" store:Type="Tables" />
+          <EntitySet Name="FUNCTIONINFO" EntityType="Self.FUNCTIONINFO" Schema="HXXF" store:Type="Tables" />
+          <EntitySet Name="FUNCTIONTYPE" EntityType="Self.FUNCTIONTYPE" Schema="HXXF" store:Type="Tables" />
+          <EntitySet Name="LOGIN_LOG" EntityType="Self.LOGIN_LOG" Schema="HXXF" store:Type="Tables" />
+          <EntitySet Name="MAPLEVEL" EntityType="Self.MAPLEVEL" Schema="HXXF" store:Type="Tables" />
+          <EntitySet Name="ROLE_FUNCTION" EntityType="Self.ROLE_FUNCTION" Schema="HXXF" store:Type="Tables" />
+          <EntitySet Name="ROLEINFO" EntityType="Self.ROLEINFO" Schema="HXXF" store:Type="Tables" />
+          <EntitySet Name="ROLETYPE" EntityType="Self.ROLETYPE" Schema="HXXF" store:Type="Tables" />
+          <EntitySet Name="SYSTEMINFO" EntityType="Self.SYSTEMINFO" Schema="HXXF" store:Type="Tables" />
+          <EntitySet Name="USER_DEPARTMENT" EntityType="Self.USER_DEPARTMENT" Schema="HXXF" store:Type="Tables" />
+          <EntitySet Name="USER_ROLE" EntityType="Self.USER_ROLE" Schema="HXXF" store:Type="Tables" />
+          <EntitySet Name="USERINFO" EntityType="Self.USERINFO" Schema="HXXF" store:Type="Tables" />
+          <EntitySet Name="USERTYPE" EntityType="Self.USERTYPE" Schema="HXXF" store:Type="Tables" />
+          <EntitySet Name="USERLEVEL" EntityType="Self.USERLEVEL" store:Type="Tables" store:Schema="HXXF">
+            <DefiningQuery>SELECT 
+"USERLEVEL"."USERID" AS "USERID", 
+"USERLEVEL"."LEVELID" AS "LEVELID"
+FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_FUNCTIONINFO_FUNCTIONTYPEID" Association="Self.FK_FUNCTIONINFO_FUNCTIONTYPEID">
+            <End Role="FUNCTIONTYPE" EntitySet="FUNCTIONTYPE" />
+            <End Role="FUNCTIONINFO" EntitySet="FUNCTIONINFO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ROLEFUNCTION_FUNCTIONID" Association="Self.FK_ROLEFUNCTION_FUNCTIONID">
+            <End Role="FUNCTIONINFO" EntitySet="FUNCTIONINFO" />
+            <End Role="ROLE_FUNCTION" EntitySet="ROLE_FUNCTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ROLEFUNCTION_ROLEID" Association="Self.FK_ROLEFUNCTION_ROLEID">
+            <End Role="ROLEINFO" EntitySet="ROLEINFO" />
+            <End Role="ROLE_FUNCTION" EntitySet="ROLE_FUNCTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ROLEINFO_ROLETYPEID" Association="Self.FK_ROLEINFO_ROLETYPEID">
+            <End Role="ROLETYPE" EntitySet="ROLETYPE" />
+            <End Role="ROLEINFO" EntitySet="ROLEINFO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USERDEPARTMENT_DEPARTMENTID" Association="Self.FK_USERDEPARTMENT_DEPARTMENTID">
+            <End Role="DEPARTMENT" EntitySet="DEPARTMENT" />
+            <End Role="USER_DEPARTMENT" EntitySet="USER_DEPARTMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USERDEPARTMENT_USERID" Association="Self.FK_USERDEPARTMENT_USERID">
+            <End Role="USERINFO" EntitySet="USERINFO" />
+            <End Role="USER_DEPARTMENT" EntitySet="USER_DEPARTMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USERINFO_USERTYPEID" Association="Self.FK_USERINFO_USERTYPEID">
+            <End Role="USERTYPE" EntitySet="USERTYPE" />
+            <End Role="USERINFO" EntitySet="USERINFO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USERLEVE_REFERENCE_MAPLEVEL" Association="Self.FK_USERLEVE_REFERENCE_MAPLEVEL">
+            <End Role="MAPLEVEL" EntitySet="MAPLEVEL" />
+            <End Role="USERLEVEL" EntitySet="USERLEVEL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USERLEVE_REFERENCE_USERINFO" Association="Self.FK_USERLEVE_REFERENCE_USERINFO">
+            <End Role="USERINFO" EntitySet="USERINFO" />
+            <End Role="USERLEVEL" EntitySet="USERLEVEL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USERROLE_ROLEID" Association="Self.FK_USERROLE_ROLEID">
+            <End Role="ROLEINFO" EntitySet="ROLEINFO" />
+            <End Role="USER_ROLE" EntitySet="USER_ROLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USERROLE_USERID" Association="Self.FK_USERROLE_USERID">
+            <End Role="USERINFO" EntitySet="USERINFO" />
+            <End Role="USER_ROLE" EntitySet="USER_ROLE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DEPARTMENT">
+          <Key>
+            <PropertyRef Name="DEPARTMENTID" />
+          </Key>
+          <Property Name="DEPARTMENTID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DEPARTMENTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="DEPARTMENTPARENTID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SINDEX" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="EXTRAID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EXTRAPID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="USER_DEPARTMENT" Relationship="Self.FK_USERDEPARTMENT_DEPARTMENTID" FromRole="DEPARTMENT" ToRole="USER_DEPARTMENT" />
+        </EntityType>
+        <EntityType Name="FUNCTIONINFO">
+          <Key>
+            <PropertyRef Name="FUNCTIONID" />
+          </Key>
+          <Property Name="FUNCTIONID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="FUNCTIONNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DISPLAYNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FUNCTIONTYPEID" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="EXECUTE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLSNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SINDEX" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="FUNCTIONTYPE" Relationship="Self.FK_FUNCTIONINFO_FUNCTIONTYPEID" FromRole="FUNCTIONINFO" ToRole="FUNCTIONTYPE" />
+          <NavigationProperty Name="ROLEINFO" Relationship="Self.ROLE_FUNCTION" FromRole="FUNCTIONINFO" ToRole="ROLEINFO" />
+        </EntityType>
+        <EntityType Name="FUNCTIONTYPE">
+          <Key>
+            <PropertyRef Name="FUNCTIONTYPEID" />
+          </Key>
+          <Property Name="FUNCTIONTYPEID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="FUNCTIONTYPENAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="CLSNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SINDEX" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="FUNCTIONINFO" Relationship="Self.FK_FUNCTIONINFO_FUNCTIONTYPEID" FromRole="FUNCTIONTYPE" ToRole="FUNCTIONINFO" />
+        </EntityType>
+        <EntityType Name="LOGIN_LOG">
+          <Key>
+            <PropertyRef Name="LOGID" />
+          </Key>
+          <Property Name="LOGID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="VISITTIME" Type="DateTime" />
+          <Property Name="STATUS" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EXCEPTION" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="USERID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="USERNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DEPARTMENTID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DEPARTMENTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MAPLEVEL">
+          <Key>
+            <PropertyRef Name="LEVELID" />
+          </Key>
+          <Property Name="LEVELID" Type="Decimal" Precision="20" Scale="0" Nullable="false" />
+          <Property Name="LON" Type="Decimal" Precision="8" Scale="5" />
+          <Property Name="LAT" Type="Decimal" Precision="8" Scale="5" />
+          <Property Name="LEVEL" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="ALT" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="MAPLEVEL1" Type="Decimal" Precision="8" Scale="5" />
+          <Property Name="NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="USERLEVEL" Relationship="Self.FK_USERLEVE_REFERENCE_MAPLEVEL" FromRole="MAPLEVEL" ToRole="USERLEVEL" />
+        </EntityType>
+        <EntityType Name="ROLEINFO">
+          <Key>
+            <PropertyRef Name="ROLEID" />
+          </Key>
+          <Property Name="ROLEID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ROLEPARENTID" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="ROLENAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DISPLAYNAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="SINDEX" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="ROLETYPEID" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="ROLETYPE" Relationship="Self.FK_ROLEINFO_ROLETYPEID" FromRole="ROLEINFO" ToRole="ROLETYPE" />
+          <NavigationProperty Name="FUNCTIONINFO" Relationship="Self.ROLE_FUNCTION" FromRole="ROLEINFO" ToRole="FUNCTIONINFO" />
+          <NavigationProperty Name="USERINFO" Relationship="Self.USER_ROLE" FromRole="ROLEINFO" ToRole="USERINFO" />
+        </EntityType>
+        <EntityType Name="ROLETYPE">
+          <Key>
+            <PropertyRef Name="ROLETYPEID" />
+          </Key>
+          <Property Name="ROLETYPEID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ROLETYPENAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="PARENTID" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="SINDEX" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="ROLEINFO" Relationship="Self.FK_ROLEINFO_ROLETYPEID" FromRole="ROLETYPE" ToRole="ROLEINFO" />
+        </EntityType>
+        <EntityType Name="SYSTEMINFO">
+          <Key>
+            <PropertyRef Name="SYSTEMID" />
+          </Key>
+          <Property Name="SYSTEMID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CLIENTID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CLIENTNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FLOW" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CLIENTSECRETS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="REDIRECTURIS" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ALLOWEDSCOPES" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ACCESSTOKENTYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CLIENTURI" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="REQUIRECONSENT" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ALLOWREMEMBERCONSENT" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="USER_DEPARTMENT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="USERID" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="DEPARTMENTID" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="EXTRAUSERID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EXTRADEPARTMENTID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DEPARTMENT" Relationship="Self.FK_USERDEPARTMENT_DEPARTMENTID" FromRole="USER_DEPARTMENT" ToRole="DEPARTMENT" />
+          <NavigationProperty Name="USERINFO" Relationship="Self.FK_USERDEPARTMENT_USERID" FromRole="USER_DEPARTMENT" ToRole="USERINFO" />
+        </EntityType>
+        <EntityType Name="USERINFO">
+          <Key>
+            <PropertyRef Name="USERID" />
+          </Key>
+          <Property Name="USERID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="USERNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PASSWORD" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DISPLAYNAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SHORTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="USERTYPEID" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="CREATETIME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="ISLOCKEDOUT" Type="Boolean" />
+          <Property Name="EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NICKNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UPDATETIME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="WEIGHT" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="USERIMAGES" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SINDEX" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="EXTRAID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="USER_DEPARTMENT" Relationship="Self.FK_USERDEPARTMENT_USERID" FromRole="USERINFO" ToRole="USER_DEPARTMENT" />
+          <NavigationProperty Name="USERTYPE" Relationship="Self.FK_USERINFO_USERTYPEID" FromRole="USERINFO" ToRole="USERTYPE" />
+          <NavigationProperty Name="USERLEVEL" Relationship="Self.FK_USERLEVE_REFERENCE_USERINFO" FromRole="USERINFO" ToRole="USERLEVEL" />
+          <NavigationProperty Name="ROLEINFO" Relationship="Self.USER_ROLE" FromRole="USERINFO" ToRole="ROLEINFO" />
+        </EntityType>
+        <EntityType Name="USERTYPE">
+          <Key>
+            <PropertyRef Name="USERTYPEID" />
+          </Key>
+          <Property Name="USERTYPEID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="TYPENAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="USERINFO" Relationship="Self.FK_USERINFO_USERTYPEID" FromRole="USERTYPE" ToRole="USERINFO" />
+        </EntityType>
+        <EntityType Name="USERLEVEL">
+          <Key>
+            <PropertyRef Name="USERID" />
+          </Key>
+          <Property Name="USERID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="LEVELID" Type="Decimal" Precision="20" Scale="0" />
+          <NavigationProperty Name="MAPLEVEL" Relationship="Self.FK_USERLEVE_REFERENCE_MAPLEVEL" FromRole="USERLEVEL" ToRole="MAPLEVEL" />
+          <NavigationProperty Name="USERINFO" Relationship="Self.FK_USERLEVE_REFERENCE_USERINFO" FromRole="USERLEVEL" ToRole="USERINFO" />
+        </EntityType>
+        <Association Name="FK_USERDEPARTMENT_DEPARTMENTID">
+          <End Role="DEPARTMENT" Type="Self.DEPARTMENT" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="USER_DEPARTMENT" Type="Self.USER_DEPARTMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTMENT">
+              <PropertyRef Name="DEPARTMENTID" />
+            </Principal>
+            <Dependent Role="USER_DEPARTMENT">
+              <PropertyRef Name="DEPARTMENTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FUNCTIONINFO_FUNCTIONTYPEID">
+          <End Role="FUNCTIONTYPE" Type="Self.FUNCTIONTYPE" Multiplicity="0..1" />
+          <End Role="FUNCTIONINFO" Type="Self.FUNCTIONINFO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FUNCTIONTYPE">
+              <PropertyRef Name="FUNCTIONTYPEID" />
+            </Principal>
+            <Dependent Role="FUNCTIONINFO">
+              <PropertyRef Name="FUNCTIONTYPEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USERLEVE_REFERENCE_MAPLEVEL">
+          <End Role="MAPLEVEL" Type="Self.MAPLEVEL" Multiplicity="0..1" />
+          <End Role="USERLEVEL" Type="Self.USERLEVEL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAPLEVEL">
+              <PropertyRef Name="LEVELID" />
+            </Principal>
+            <Dependent Role="USERLEVEL">
+              <PropertyRef Name="LEVELID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ROLEINFO_ROLETYPEID">
+          <End Role="ROLETYPE" Type="Self.ROLETYPE" Multiplicity="0..1" />
+          <End Role="ROLEINFO" Type="Self.ROLEINFO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLETYPE">
+              <PropertyRef Name="ROLETYPEID" />
+            </Principal>
+            <Dependent Role="ROLEINFO">
+              <PropertyRef Name="ROLETYPEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USERDEPARTMENT_USERID">
+          <End Role="USERINFO" Type="Self.USERINFO" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="USER_DEPARTMENT" Type="Self.USER_DEPARTMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERINFO">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="USER_DEPARTMENT">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USERINFO_USERTYPEID">
+          <End Role="USERTYPE" Type="Self.USERTYPE" Multiplicity="0..1" />
+          <End Role="USERINFO" Type="Self.USERINFO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERTYPE">
+              <PropertyRef Name="USERTYPEID" />
+            </Principal>
+            <Dependent Role="USERINFO">
+              <PropertyRef Name="USERTYPEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USERLEVE_REFERENCE_USERINFO">
+          <End Role="USERINFO" Type="Self.USERINFO" Multiplicity="1" />
+          <End Role="USERLEVEL" Type="Self.USERLEVEL" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="USERINFO">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="USERLEVEL">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ROLE_FUNCTION">
+          <End Role="FUNCTIONINFO" Type="Self.FUNCTIONINFO" Multiplicity="*" />
+          <End Role="ROLEINFO" Type="Self.ROLEINFO" Multiplicity="*" />
+        </Association>
+        <Association Name="USER_ROLE">
+          <End Role="ROLEINFO" Type="Self.ROLEINFO" Multiplicity="*" />
+          <End Role="USERINFO" Type="Self.USERINFO" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="DbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DEPARTMENT" EntityType="Self.DEPARTMENT" />
+          <EntitySet Name="FUNCTIONINFO" EntityType="Self.FUNCTIONINFO" />
+          <EntitySet Name="FUNCTIONTYPE" EntityType="Self.FUNCTIONTYPE" />
+          <EntitySet Name="LOGIN_LOG" EntityType="Self.LOGIN_LOG" />
+          <EntitySet Name="MAPLEVEL" EntityType="Self.MAPLEVEL" />
+          <EntitySet Name="ROLEINFO" EntityType="Self.ROLEINFO" />
+          <EntitySet Name="ROLETYPE" EntityType="Self.ROLETYPE" />
+          <EntitySet Name="SYSTEMINFO" EntityType="Self.SYSTEMINFO" />
+          <EntitySet Name="USER_DEPARTMENT" EntityType="Self.USER_DEPARTMENT" />
+          <EntitySet Name="USERINFO" EntityType="Self.USERINFO" />
+          <EntitySet Name="USERTYPE" EntityType="Self.USERTYPE" />
+          <EntitySet Name="USERLEVEL" EntityType="Self.USERLEVEL" />
+          <AssociationSet Name="FK_USERDEPARTMENT_DEPARTMENTID" Association="Self.FK_USERDEPARTMENT_DEPARTMENTID">
+            <End Role="DEPARTMENT" EntitySet="DEPARTMENT" />
+            <End Role="USER_DEPARTMENT" EntitySet="USER_DEPARTMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FUNCTIONINFO_FUNCTIONTYPEID" Association="Self.FK_FUNCTIONINFO_FUNCTIONTYPEID">
+            <End Role="FUNCTIONTYPE" EntitySet="FUNCTIONTYPE" />
+            <End Role="FUNCTIONINFO" EntitySet="FUNCTIONINFO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USERLEVE_REFERENCE_MAPLEVEL" Association="Self.FK_USERLEVE_REFERENCE_MAPLEVEL">
+            <End Role="MAPLEVEL" EntitySet="MAPLEVEL" />
+            <End Role="USERLEVEL" EntitySet="USERLEVEL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ROLEINFO_ROLETYPEID" Association="Self.FK_ROLEINFO_ROLETYPEID">
+            <End Role="ROLETYPE" EntitySet="ROLETYPE" />
+            <End Role="ROLEINFO" EntitySet="ROLEINFO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USERDEPARTMENT_USERID" Association="Self.FK_USERDEPARTMENT_USERID">
+            <End Role="USERINFO" EntitySet="USERINFO" />
+            <End Role="USER_DEPARTMENT" EntitySet="USER_DEPARTMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USERINFO_USERTYPEID" Association="Self.FK_USERINFO_USERTYPEID">
+            <End Role="USERTYPE" EntitySet="USERTYPE" />
+            <End Role="USERINFO" EntitySet="USERINFO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USERLEVE_REFERENCE_USERINFO" Association="Self.FK_USERLEVE_REFERENCE_USERINFO">
+            <End Role="USERINFO" EntitySet="USERINFO" />
+            <End Role="USERLEVEL" EntitySet="USERLEVEL" />
+          </AssociationSet>
+          <AssociationSet Name="ROLE_FUNCTION" Association="Self.ROLE_FUNCTION">
+            <End Role="FUNCTIONINFO" EntitySet="FUNCTIONINFO" />
+            <End Role="ROLEINFO" EntitySet="ROLEINFO" />
+          </AssociationSet>
+          <AssociationSet Name="USER_ROLE" Association="Self.USER_ROLE">
+            <End Role="ROLEINFO" EntitySet="ROLEINFO" />
+            <End Role="USERINFO" EntitySet="USERINFO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="DbEntities">
+          <EntitySetMapping Name="DEPARTMENT">
+            <EntityTypeMapping TypeName="Model.DEPARTMENT">
+              <MappingFragment StoreEntitySet="DEPARTMENT">
+                <ScalarProperty Name="DEPARTMENTID" ColumnName="DEPARTMENTID" />
+                <ScalarProperty Name="DEPARTMENTNAME" ColumnName="DEPARTMENTNAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="DEPARTMENTPARENTID" ColumnName="DEPARTMENTPARENTID" />
+                <ScalarProperty Name="SINDEX" ColumnName="SINDEX" />
+                <ScalarProperty Name="EXTRAID" ColumnName="EXTRAID" />
+                <ScalarProperty Name="EXTRAPID" ColumnName="EXTRAPID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FUNCTIONINFO">
+            <EntityTypeMapping TypeName="Model.FUNCTIONINFO">
+              <MappingFragment StoreEntitySet="FUNCTIONINFO">
+                <ScalarProperty Name="FUNCTIONID" ColumnName="FUNCTIONID" />
+                <ScalarProperty Name="FUNCTIONNAME" ColumnName="FUNCTIONNAME" />
+                <ScalarProperty Name="DISPLAYNAME" ColumnName="DISPLAYNAME" />
+                <ScalarProperty Name="FUNCTIONTYPEID" ColumnName="FUNCTIONTYPEID" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="EXECUTE" ColumnName="EXECUTE" />
+                <ScalarProperty Name="CLSNAME" ColumnName="CLSNAME" />
+                <ScalarProperty Name="SINDEX" ColumnName="SINDEX" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FUNCTIONTYPE">
+            <EntityTypeMapping TypeName="Model.FUNCTIONTYPE">
+              <MappingFragment StoreEntitySet="FUNCTIONTYPE">
+                <ScalarProperty Name="FUNCTIONTYPEID" ColumnName="FUNCTIONTYPEID" />
+                <ScalarProperty Name="FUNCTIONTYPENAME" ColumnName="FUNCTIONTYPENAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="CLSNAME" ColumnName="CLSNAME" />
+                <ScalarProperty Name="SINDEX" ColumnName="SINDEX" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOGIN_LOG">
+            <EntityTypeMapping TypeName="Model.LOGIN_LOG">
+              <MappingFragment StoreEntitySet="LOGIN_LOG">
+                <ScalarProperty Name="LOGID" ColumnName="LOGID" />
+                <ScalarProperty Name="VISITTIME" ColumnName="VISITTIME" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="EXCEPTION" ColumnName="EXCEPTION" />
+                <ScalarProperty Name="USERID" ColumnName="USERID" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="DEPARTMENTID" ColumnName="DEPARTMENTID" />
+                <ScalarProperty Name="DEPARTMENTNAME" ColumnName="DEPARTMENTNAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MAPLEVEL">
+            <EntityTypeMapping TypeName="Model.MAPLEVEL">
+              <MappingFragment StoreEntitySet="MAPLEVEL">
+                <ScalarProperty Name="LEVELID" ColumnName="LEVELID" />
+                <ScalarProperty Name="LON" ColumnName="LON" />
+                <ScalarProperty Name="LAT" ColumnName="LAT" />
+                <ScalarProperty Name="LEVEL" ColumnName="LEVEL" />
+                <ScalarProperty Name="ALT" ColumnName="ALT" />
+                <ScalarProperty Name="MAPLEVEL1" ColumnName="MAPLEVEL" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROLEINFO">
+            <EntityTypeMapping TypeName="Model.ROLEINFO">
+              <MappingFragment StoreEntitySet="ROLEINFO">
+                <ScalarProperty Name="ROLEID" ColumnName="ROLEID" />
+                <ScalarProperty Name="ROLEPARENTID" ColumnName="ROLEPARENTID" />
+                <ScalarProperty Name="ROLENAME" ColumnName="ROLENAME" />
+                <ScalarProperty Name="DISPLAYNAME" ColumnName="DISPLAYNAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="SINDEX" ColumnName="SINDEX" />
+                <ScalarProperty Name="ROLETYPEID" ColumnName="ROLETYPEID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROLETYPE">
+            <EntityTypeMapping TypeName="Model.ROLETYPE">
+              <MappingFragment StoreEntitySet="ROLETYPE">
+                <ScalarProperty Name="ROLETYPEID" ColumnName="ROLETYPEID" />
+                <ScalarProperty Name="ROLETYPENAME" ColumnName="ROLETYPENAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="PARENTID" ColumnName="PARENTID" />
+                <ScalarProperty Name="SINDEX" ColumnName="SINDEX" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYSTEMINFO">
+            <EntityTypeMapping TypeName="Model.SYSTEMINFO">
+              <MappingFragment StoreEntitySet="SYSTEMINFO">
+                <ScalarProperty Name="ALLOWREMEMBERCONSENT" ColumnName="ALLOWREMEMBERCONSENT" />
+                <ScalarProperty Name="REQUIRECONSENT" ColumnName="REQUIRECONSENT" />
+                <ScalarProperty Name="CLIENTURI" ColumnName="CLIENTURI" />
+                <ScalarProperty Name="ACCESSTOKENTYPE" ColumnName="ACCESSTOKENTYPE" />
+                <ScalarProperty Name="ALLOWEDSCOPES" ColumnName="ALLOWEDSCOPES" />
+                <ScalarProperty Name="REDIRECTURIS" ColumnName="REDIRECTURIS" />
+                <ScalarProperty Name="CLIENTSECRETS" ColumnName="CLIENTSECRETS" />
+                <ScalarProperty Name="FLOW" ColumnName="FLOW" />
+                <ScalarProperty Name="CLIENTNAME" ColumnName="CLIENTNAME" />
+                <ScalarProperty Name="CLIENTID" ColumnName="CLIENTID" />
+                <ScalarProperty Name="SYSTEMID" ColumnName="SYSTEMID" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USER_DEPARTMENT">
+            <EntityTypeMapping TypeName="Model.USER_DEPARTMENT">
+              <MappingFragment StoreEntitySet="USER_DEPARTMENT">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="USERID" ColumnName="USERID" />
+                <ScalarProperty Name="DEPARTMENTID" ColumnName="DEPARTMENTID" />
+                <ScalarProperty Name="EXTRAUSERID" ColumnName="EXTRAUSERID" />
+                <ScalarProperty Name="EXTRADEPARTMENTID" ColumnName="EXTRADEPARTMENTID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERINFO">
+            <EntityTypeMapping TypeName="Model.USERINFO">
+              <MappingFragment StoreEntitySet="USERINFO">
+                <ScalarProperty Name="USERID" ColumnName="USERID" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="DISPLAYNAME" ColumnName="DISPLAYNAME" />
+                <ScalarProperty Name="SHORTNAME" ColumnName="SHORTNAME" />
+                <ScalarProperty Name="USERTYPEID" ColumnName="USERTYPEID" />
+                <ScalarProperty Name="CREATETIME" ColumnName="CREATETIME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="ISLOCKEDOUT" ColumnName="ISLOCKEDOUT" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="NICKNAME" ColumnName="NICKNAME" />
+                <ScalarProperty Name="UPDATETIME" ColumnName="UPDATETIME" />
+                <ScalarProperty Name="WEIGHT" ColumnName="WEIGHT" />
+                <ScalarProperty Name="USERIMAGES" ColumnName="USERIMAGES" />
+                <ScalarProperty Name="SINDEX" ColumnName="SINDEX" />
+                <ScalarProperty Name="EXTRAID" ColumnName="EXTRAID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERTYPE">
+            <EntityTypeMapping TypeName="Model.USERTYPE">
+              <MappingFragment StoreEntitySet="USERTYPE">
+                <ScalarProperty Name="USERTYPEID" ColumnName="USERTYPEID" />
+                <ScalarProperty Name="TYPENAME" ColumnName="TYPENAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERLEVEL">
+            <EntityTypeMapping TypeName="Model.USERLEVEL">
+              <MappingFragment StoreEntitySet="USERLEVEL">
+                <ScalarProperty Name="USERID" ColumnName="USERID" />
+                <ScalarProperty Name="LEVELID" ColumnName="LEVELID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ROLE_FUNCTION" TypeName="Model.ROLE_FUNCTION" StoreEntitySet="ROLE_FUNCTION">
+            <EndProperty Name="FUNCTIONINFO">
+              <ScalarProperty Name="FUNCTIONID" ColumnName="FUNCTIONID" />
+            </EndProperty>
+            <EndProperty Name="ROLEINFO">
+              <ScalarProperty Name="ROLEID" ColumnName="ROLEID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="USER_ROLE" TypeName="Model.USER_ROLE" StoreEntitySet="USER_ROLE">
+            <EndProperty Name="ROLEINFO">
+              <ScalarProperty Name="ROLEID" ColumnName="ROLEID" />
+            </EndProperty>
+            <EndProperty Name="USERINFO">
+              <ScalarProperty Name="USERID" ColumnName="USERID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

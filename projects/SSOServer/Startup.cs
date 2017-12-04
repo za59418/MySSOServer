@@ -27,29 +27,30 @@ namespace SSOServer
 {
     public class Startup
     {
+        public static IdentityServerServiceFactory factory = null;
+
         public void Configuration(IAppBuilder app)
         {
             AntiForgeryConfig.UniqueClaimTypeIdentifier = Constants.ClaimTypes.Subject;
             JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
 
+            factory = new IdentityServerServiceFactory()
+                            .UseInMemoryUsers(Users.Get())
+                            .UseInMemoryClients(Clients.Get())
+                            .UseInMemoryScopes(Scopes.Get());
+
+            //自定义登陆界面
+            factory.ViewService = new Registration<IViewService, MvcViewService<LogonWorkflowController>>();
+
+            factory.Register(new Registration<HttpContext>(resolver => HttpContext.Current));
+            factory.Register(new Registration<HttpContextBase>(resolver => new HttpContextWrapper(resolver.Resolve<HttpContext>())));
+            factory.Register(new Registration<HttpRequestBase>(resolver => resolver.Resolve<HttpContextBase>().Request));
+            factory.Register(new Registration<HttpResponseBase>(resolver => resolver.Resolve<HttpContextBase>().Response));
+            factory.Register(new Registration<HttpServerUtilityBase>(resolver => resolver.Resolve<HttpContextBase>().Server));
+            factory.Register(new Registration<HttpSessionStateBase>(resolver => resolver.Resolve<HttpContextBase>().Session));
+
             app.Map("/identity", idsrvApp =>
             {
-                var factory = new IdentityServerServiceFactory()
-                                .UseInMemoryUsers(Users.Get())
-                                .UseInMemoryClients(Clients.Get())
-                                .UseInMemoryScopes(Scopes.Get());
-
-                //自定义登陆界面
-                factory.ViewService = new Registration<IViewService, MvcViewService<LogonWorkflowController>>();
-
-                factory.Register(new Registration<HttpContext>(resolver => HttpContext.Current));
-                factory.Register(new Registration<HttpContextBase>(resolver => new HttpContextWrapper(resolver.Resolve<HttpContext>())));
-                factory.Register(new Registration<HttpRequestBase>(resolver => resolver.Resolve<HttpContextBase>().Request));
-                factory.Register(new Registration<HttpResponseBase>(resolver => resolver.Resolve<HttpContextBase>().Response));
-                factory.Register(new Registration<HttpServerUtilityBase>(resolver => resolver.Resolve<HttpContextBase>().Server));
-                factory.Register(new Registration<HttpSessionStateBase>(resolver => resolver.Resolve<HttpContextBase>().Session));
-
-
                 idsrvApp.UseIdentityServer(new IdentityServerOptions
                 {
                     SiteName = "SSO 单点登陆系统",
@@ -85,21 +86,14 @@ namespace SSOServer
                         var id = n.AuthenticationTicket.Identity;
 
                         // we want to keep first name, last name, subject and roles
-                        var givenName = id.FindFirst(Constants.ClaimTypes.GivenName);
-                        var familyName = id.FindFirst(Constants.ClaimTypes.FamilyName);
+                        var niceName = id.FindFirst(Constants.ClaimTypes.NickName);
                         var sub = id.FindFirst(Constants.ClaimTypes.Subject);
-                        var roles = id.FindAll(Constants.ClaimTypes.Role);
 
                         // create new identity and set name and role claim type
-                        var nid = new ClaimsIdentity(
-                            id.AuthenticationType,
-                            Constants.ClaimTypes.GivenName,
-                            Constants.ClaimTypes.Role);
+                        var nid = new ClaimsIdentity(id.AuthenticationType);
 
-                        nid.AddClaim(givenName);
-                        nid.AddClaim(familyName);
+                        nid.AddClaim(niceName);
                         nid.AddClaim(sub);
-                        nid.AddClaims(roles);
 
                         // add some other app specific claim
                         nid.AddClaim(new Claim("app_specific", "some data"));
