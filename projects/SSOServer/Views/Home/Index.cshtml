@@ -18,7 +18,7 @@
                 <th>客户端名称</th>
                 <th>声明</th>
                 <th>跳转地址</th>
-                <td>弹出授权页面</td>
+                <th>弹出授权页面</th>
             </tr>
         </thead>
         <tbody>
@@ -39,7 +39,7 @@
                             @uri<i>&nbsp;</i>
                         }
                     </td>
-                    <td>@(client.RequireConsent==false?"否":"是")</td>
+                    <td>@(client.RequireConsent == false ? "否"  :"是")</td>
                 </tr>
             }
         </tbody>
