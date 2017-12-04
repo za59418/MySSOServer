@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Security.Claims;
 using Thinktecture.IdentityModel.Mvc;
+using IdentityServer3.Core.Models;
+using SSOServer;
 
 namespace SSOServer.Controllers
 {
@@ -12,7 +14,15 @@ namespace SSOServer.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            IEnumerable<Client> clients = Clients.Get();
+            return View(clients);
+        }
+
+        public ActionResult RefreshClient()
+        {
+            IEnumerable<Client> clients = Clients.Get();
+            //Startup.factory.UseInMemoryClients(clients);
+            return View("Index", clients);
         }
 
         [Authorize]

@@ -1,7 +1,9 @@
-﻿using IdentityServer3.Core;
+﻿using System.Linq;
+using IdentityServer3.Core;
 using IdentityServer3.Core.Services.InMemory;
 using System.Collections.Generic;
 using System.Security.Claims;
+using SSOServer.Db;
 
 namespace SSOServer
 {
@@ -9,28 +11,32 @@ namespace SSOServer
     {
         public static List<InMemoryUser> Get()
         {
-            return new List<InMemoryUser>
-        {
-            new InMemoryUser
+            List<InMemoryUser> result = null;
+            using (DbEntities db = new Db.DbEntities())
             {
-                Username = "bob",
-                Password = "secret",
-                Subject = "1",
-
-                Claims = new[]
+                List<USERINFO> users = db.USERINFO.Take<USERINFO>(5000).ToList<USERINFO>();
+                if (null != users && users.Count > 0)
                 {
-                    new Claim(Constants.ClaimTypes.Name, "Bob Smith"),
-                    new Claim(Constants.ClaimTypes.GivenName, "Bob"),
-                    new Claim(Constants.ClaimTypes.FamilyName, "Smith"),
-                    new Claim(Constants.ClaimTypes.Email, "BobSmith@email.com"),
-                    new Claim(Constants.ClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(Constants.ClaimTypes.Role, "Developer"),
-                    new Claim(Constants.ClaimTypes.Role, "Geek"),
-                    new Claim(Constants.ClaimTypes.WebSite, "http://bob.com"),
-                    new Claim(Constants.ClaimTypes.Address, @"{ ""street_address"": ""One Hacker Way"", ""locality"": ""Heidelberg"", ""postal_code"": 69118, ""country"": ""Germany"" }", Constants.ClaimValueTypes.Json)
+                    result = new List<InMemoryUser>();
+                    foreach (USERINFO user in users)
+                    {
+                        InMemoryUser u = new InMemoryUser
+                        {
+                            Username = user.USERNAME,
+                            Password = user.PASSWORD,
+                            Subject = "1",
+                            Claims = new[]
+                            {
+                            new Claim(Constants.ClaimTypes.Name, user.DISPLAYNAME),
+                            new Claim(Constants.ClaimTypes.NickName, user.NICKNAME),
+                            new Claim(Constants.ClaimTypes.Email, user.EMAIL)
+                        }
+                        };
+                        result.Add(u);
+                    }
                 }
             }
-        };
+            return result;
         }
     }
 }
