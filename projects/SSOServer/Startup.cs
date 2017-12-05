@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Net;
 using System.Net.Security;
+using System.Xml;
 
 [assembly: OwinStartup(typeof(SSOServer.Startup))]
 namespace SSOServer
@@ -68,12 +69,19 @@ namespace SSOServer
                 AuthenticationType = "Cookies"
             });
 
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(string.Format(@"{0}\bin\identityServer\ServerLogin.xml", AppDomain.CurrentDomain.BaseDirectory));
+            string redirecturis = doc.SelectSingleNode("Client/RedirectUris").InnerText;
+            string authority = redirecturis + "identity";
+            string clientid = doc.SelectSingleNode("Client/ClientId").InnerText;
+
             app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
             {
-                Authority = "https://192.168.1.115:44319/identity",
-                ClientId = "mvc",
+                Authority = authority,
+                ClientId = clientid,
                 Scope = "openid profile roles",
-                RedirectUri = "https://192.168.1.115:44319/",
+                RedirectUri = redirecturis,
                 ResponseType = "id_token",
 
                 SignInAsAuthenticationType = "Cookies",

@@ -303,6 +303,7 @@
     <Content Include="assets\css\bootstrap.css" />
     <Content Include="assets\css\loader-style.css" />
     <Content Include="assets\css\signin.css" />
+    <Content Include="assets\css\style.css" />
     <Content Include="assets\fonts\fontawesome-webfont.svg" />
     <Content Include="assets\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="assets\img\bg.jpg" />
@@ -323,6 +324,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <EmbeddedResource Include="IdentityServer\ServerLogin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -348,6 +352,7 @@
     <Content Include="Db\SSOModel.edmx.diagram">
       <DependentUpon>SSOModel.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\SSOServer.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -381,6 +386,7 @@
     <Content Include="Views\LogonWorkflow\Permissions.cshtml" />
     <Content Include="Views\LogonWorkflow\_RenderAngularModel.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\RegistClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

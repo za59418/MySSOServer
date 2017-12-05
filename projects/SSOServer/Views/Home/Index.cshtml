@@ -1,48 +1,64 @@
-﻿@using IdentityServer3.Core.Models
-@model IEnumerable<Client>
+﻿@using SSOServer.Db
+@model IEnumerable<SYSTEMINFO>
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "主页";
 }
 
-<div class="jumbotron">
-    <h1>注册用户</h1>
-    <p class="lead">客户端需在本页注册一个客户ID，指定连接方式后方可进行登陆；多个客户端集成无需多次登陆。</p>
-    <p><a href="@Url.Action("RefreshClient", "Home")" class="btn btn-primary btn-lg">刷新客户信息 &raquo;</a></p>
-</div>
+<script type="text/javascript">
+    function RedAlert()
+    {
+        if(confirm("删除后不可恢复，确定要删除吗？"))
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+<link rel="stylesheet" href="~/assets/css/loader-style.css">
+<link rel="stylesheet" href="~/assets/css/bootstrap.css">
 
-<div>
-    <table>
-        <thead>
-            <tr>
-                <th>客户端ID</th>
-                <th>客户端名称</th>
-                <th>声明</th>
-                <th>跳转地址</th>
-                <th>弹出授权页面</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Client client in Model)
-            {
+
+<div class="col-sm-12">
+    <div class="jumbotron">
+        <h1>注册客户端</h1>
+        <p class="lead">客户端需在本页注册一个客户ID，指定连接方式后方可进行登陆；多个客户端集成无需多次登陆。</p>
+        <p><a href="@Url.Action("RegistClient", "Home")" class="btn btn-primary btn-lg">注册新客户端 &raquo;</a></p>
+    </div>
+    <div id="content-mail">
+        <div class="table-responsive">
+            <!-- THE MESSAGES -->
+            <table class="table table-mailbox">
                 <tr>
-                    <td style="color:green;font-weight:bold">@client.ClientId</td>
-                    <td>@client.ClientName</td>
-                    <td>
-                        @foreach (string scope in client.AllowedScopes)
-                        {
-                            @scope<i>&nbsp;</i>
-                        }
-                    </td>
-                    <td>
-                        @foreach (string uri in client.RedirectUris)
-                        {
-                            @uri<i>&nbsp;</i>
-                        }
-                    </td>
-                    <td>@(client.RequireConsent == false ? "否"  :"是")</td>
+                    <th>客户端ID（标识）</th>
+                    <th>客户端名称</th>
+                    <th>声明</th>
+                    <th>跳转地址</th>
+                    <th>弹出授权页面</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-
+                @if (null != Model)
+                {
+                    foreach (SYSTEMINFO client in Model)
+                    {
+                    <tr class="unread">
+                        <td class="name" style="color:green;font-weight:bold;">
+                            <i class="star"></i>
+                            @client.CLIENTID
+                        </td>
+                        <td>@client.CLIENTNAME</td>
+                        <td class="subject">
+                            @client.ALLOWEDSCOPES
+                        </td>
+                        <td >
+                            @client.REDIRECTURIS
+                        </td>
+                        <td class="text-right">@(client.REQUIRECONSENT == "false" ? "否" : "是")</td>
+                        <td><a onclick="return RedAlert();" href="@Url.Action("DeleteClient", "Home", new { SYSTEMID = client.SYSTEMID })">删除</a></td>
+                    </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
 </div>
