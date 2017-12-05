@@ -5,6 +5,8 @@ using IdentityServer3.Core.Services.InMemory;
 using System.Collections.Generic;
 using System.Security.Claims;
 using SSOServer.Db;
+using System.Xml;
+using System;
 
 namespace SSOServer
 {
@@ -12,6 +14,15 @@ namespace SSOServer
     {
         public static IEnumerable<Client> Get()
         {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(string.Format(@"{0}\bin\identityServer\ServerLogin.xml", AppDomain.CurrentDomain.BaseDirectory));
+            string redirecturis = doc.SelectSingleNode("Client/RedirectUris").InnerText;
+            string authority = redirecturis + "identity";
+            string clientid = doc.SelectSingleNode("Client/ClientId").InnerText;
+            string clientname = doc.SelectSingleNode("Client/ClientName").InnerText;
+            string clienturi = doc.SelectSingleNode("Client/ClientUri").InnerText;
+            bool AllowAccessToAllScopes = bool.Parse(doc.SelectSingleNode("Client/AllowAccessToAllScopes").InnerText);
+                                                                                  
             List<Client> result = null;
             using (DbEntities db = new Db.DbEntities())
             {
@@ -50,6 +61,23 @@ namespace SSOServer
                         }
                         result.Add(c);
                     }
+
+                    result.Add(
+                        new Client
+                        {
+                            ClientName = clientname,
+                            ClientId = clientid,
+                            Flow = Flows.Implicit,
+
+                            RequireConsent = false,
+                            ClientUri = clienturi,
+                            RedirectUris = new List<string>
+                            {
+                                redirecturis
+                            },
+                            AllowAccessToAllScopes = AllowAccessToAllScopes
+                        }
+                    );
                 }
             }
             return result;

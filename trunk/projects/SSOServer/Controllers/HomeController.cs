@@ -7,22 +7,51 @@ using System.Security.Claims;
 using Thinktecture.IdentityModel.Mvc;
 using IdentityServer3.Core.Models;
 using SSOServer;
+using SSOServer.Db;
 
 namespace SSOServer.Controllers
 {
     public class HomeController : Controller
     {
+        private DbEntities db = new DbEntities();
         public ActionResult Index()
         {
-            IEnumerable<Client> clients = Clients.Get();
+            IEnumerable<SYSTEMINFO> clients = null;
+            clients = db.SYSTEMINFO.Take(5000);
             return View(clients);
         }
 
-        public ActionResult RefreshClient()
+        public ActionResult RegistClient()
         {
-            IEnumerable<Client> clients = Clients.Get();
-            //Startup.factory.UseInMemoryClients(clients);
-            return View("Index", clients);
+            List<SelectListItem> consents = new List<SelectListItem>();
+            consents.Add(new SelectListItem { Value = "false", Text = "否" });
+            consents.Add(new SelectListItem { Value = "true", Text = "是" });
+            this.ViewData["consents"] = consents;
+
+            SYSTEMINFO model = new SYSTEMINFO();
+            model.ALLOWEDSCOPES = "openid,logon";
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult DoRegistClient(SYSTEMINFO model)
+        {
+            model.FLOW = "Implicit";
+            model.ALLOWREMEMBERCONSENT = "false";
+            model.CLIENTURI = "https://identityserver.io";
+
+            db.SYSTEMINFO.Add(model);
+            db.SaveChanges();
+
+            return Redirect("Index");
+        }
+
+        public ActionResult DeleteClient(int SYSTEMID)
+        {
+            SYSTEMINFO entity = db.SYSTEMINFO.Find(SYSTEMID);
+            db.SYSTEMINFO.Remove(entity);
+            db.SaveChanges();
+            return Redirect("Index");
         }
 
         [Authorize]
