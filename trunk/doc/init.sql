@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 11g                           */
-/* Created on:     2017/12/4 16:18:42                           */
+/* Created on:     2017/12/5 16:54:08                           */
 /*==============================================================*/
 
 
@@ -122,7 +122,7 @@ drop trigger TR_ROLETYPE
 drop trigger TR_SCENES
 /
 
-drop trigger TR_ROLEINFO
+drop trigger TR_SYSTEMINFO
 /
 
 drop trigger TR_USERINFO
@@ -456,6 +456,9 @@ drop sequence SE_ROLETYPE
 drop sequence SE_SCENES
 /
 
+drop sequence SE_SYSTEMINFO
+/
+
 drop sequence SE_USERDEPARTMENT
 /
 
@@ -682,6 +685,12 @@ start with 1160
  minvalue 0
 nocycle
 noorder
+/
+
+create sequence SE_SYSTEMINFO
+increment by 1
+start with 1
+ nomaxvalue
 /
 
 create sequence SE_USERDEPARTMENT
@@ -2582,8 +2591,8 @@ create table SYSTEMINFO
    ACCESSTOKENTYPE      VARCHAR2(20),
    DESCRIPTION          VARCHAR2(200),
    CLIENTURI            VARCHAR2(100),
-   REQUIRECONSENT       VARCHAR2(20),
-   ALLOWREMEMBERCONSENT VARCHAR2(20),
+   REQUIRECONSENT       VARCHAR2(20)         default 'false',
+   ALLOWREMEMBERCONSENT VARCHAR2(20)         default 'false',
    constraint PK_SYSTEMINFO primary key (SYSTEMID)
 )
 pctfree 10
@@ -3834,10 +3843,24 @@ BEGIN
 /
 
 
-create trigger TR_ROLEINFO   before  insert on SYSTEMINFO REFERENCING NEW AS NEW OLD AS OLD when (NEW.ROLEID IS NULL)
-BEGIN
-  SELECT SE_ROLEINFO.NEXTVAL INTO:NEW.ROLEID FROM DUAL;
-  END;
+create trigger TR_SYSTEMINFO before insert
+on SYSTEMINFO for each row
+declare
+    integrity_error  exception;
+    errno            integer;
+    errmsg           char(200);
+    dummy            integer;
+    found            boolean;
+
+begin
+    --  Column "SYSTEMID" uses sequence SE_SYSTEMINFO
+    select SE_SYSTEMINFO.NEXTVAL INTO :new.SYSTEMID from dual;
+
+--  Errors handling
+exception
+    when integrity_error then
+       raise_application_error(errno, errmsg);
+end;
 /
 
 
