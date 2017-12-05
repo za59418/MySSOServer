@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Client>
+  <ClientName>服务器测试登陆</ClientName>
+  <ClientId>server</ClientId>
+  <Flow>1</Flow>
+  <RequireConsent>false</RequireConsent>
+  <AllowAccessToAllScopes>true</AllowAccessToAllScopes>
+  <ClientUri>https://identityserver.io</ClientUri>
+  <RedirectUris>https://192.168.1.115:44319/</RedirectUris>
+</Client>
