@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DEPARTMENT">
           <Key>
             <PropertyRef Name="DEPARTMENTID" />
@@ -17,6 +17,12 @@
           <Property Name="EXTRAID" Type="varchar2" MaxLength="50" />
           <Property Name="EXTRAPID" Type="varchar2" MaxLength="50" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6013: 表/视图“HXXF.DEPARTMENT_FUNCTION”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="DEPARTMENT_FUNCTION">
+          <Property Name="DEPARTMENTID" Type="number" Precision="38" Scale="0" />
+          <Property Name="FUNCTIONID" Type="number" Precision="38" Scale="0" />
+        </EntityType>-->
         <EntityType Name="FUNCTIONINFO">
           <Key>
             <PropertyRef Name="FUNCTIONID" />
@@ -53,18 +59,6 @@
           <Property Name="DEPARTMENTID" Type="varchar2" MaxLength="20" />
           <Property Name="DEPARTMENTNAME" Type="varchar2" MaxLength="50" />
         </EntityType>
-        <EntityType Name="MAPLEVEL">
-          <Key>
-            <PropertyRef Name="LEVELID" />
-          </Key>
-          <Property Name="LEVELID" Type="number" Precision="20" Scale="0" Nullable="false" />
-          <Property Name="LON" Type="number" Precision="8" Scale="5" />
-          <Property Name="LAT" Type="number" Precision="8" Scale="5" />
-          <Property Name="LEVEL" Type="number" Precision="38" Scale="0" />
-          <Property Name="ALT" Type="number" Precision="10" Scale="5" />
-          <Property Name="MAPLEVEL" Type="number" Precision="8" Scale="5" />
-          <Property Name="NAME" Type="varchar2" MaxLength="30" />
-        </EntityType>
         <EntityType Name="ROLE_FUNCTION">
           <Key>
             <PropertyRef Name="ROLEID" />
@@ -95,6 +89,12 @@
           <Property Name="PARENTID" Type="number" Precision="38" Scale="0" />
           <Property Name="SINDEX" Type="number" Precision="38" Scale="0" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6013: 表/视图“HXXF.SYSTEM_FUNCTION”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="SYSTEM_FUNCTION">
+          <Property Name="FUNCTIONID" Type="number" Precision="38" Scale="0" />
+          <Property Name="SYSTEMID" Type="number" Precision="38" Scale="0" />
+        </EntityType>-->
         <EntityType Name="SYSTEMINFO">
           <Key>
             <PropertyRef Name="SYSTEMID" />
@@ -111,6 +111,7 @@
           <Property Name="CLIENTURI" Type="varchar2" MaxLength="100" />
           <Property Name="REQUIRECONSENT" Type="varchar2" MaxLength="20" />
           <Property Name="ALLOWREMEMBERCONSENT" Type="varchar2" MaxLength="20" />
+          <Property Name="ALLOWACCESSTOALLSCOPES" Type="varchar2" MaxLength="20" />
         </EntityType>
         <EntityType Name="USER_DEPARTMENT">
           <Key>
@@ -122,6 +123,12 @@
           <Property Name="EXTRAUSERID" Type="varchar2" MaxLength="50" />
           <Property Name="EXTRADEPARTMENTID" Type="varchar2" MaxLength="50" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6013: 表/视图“HXXF.USER_FUNCTION”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="USER_FUNCTION">
+          <Property Name="USERID" Type="number" Precision="38" Scale="0" />
+          <Property Name="FUNCTIONID" Type="number" Precision="38" Scale="0" />
+        </EntityType>-->
         <EntityType Name="USER_ROLE">
           <Key>
             <PropertyRef Name="USERID" />
@@ -168,6 +175,12 @@
           <Property Name="TYPENAME" Type="varchar2" MaxLength="50" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="256" />
         </EntityType>
+        <!--生成过程中发现错误:
+错误 6004: 某个关系引用了表“HXXF.DEPARTMENT_FUNCTION”，但找不到该表。
+        <Association Name="FK_DEPARTME_REFERENCE_DEPARTME" />-->
+        <!--生成过程中发现错误:
+错误 6004: 某个关系引用了表“HXXF.DEPARTMENT_FUNCTION”，但找不到该表。
+        <Association Name="FK_DEPARTME_REFERENCE_FUNCTION" />-->
         <Association Name="FK_FUNCTIONINFO_FUNCTIONTYPEID">
           <End Role="FUNCTIONTYPE" Type="Self.FUNCTIONTYPE" Multiplicity="0..1" />
           <End Role="FUNCTIONINFO" Type="Self.FUNCTIONINFO" Multiplicity="*" />
@@ -220,6 +233,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <!--生成过程中发现错误:
+错误 6004: 某个关系引用了表“HXXF.USER_FUNCTION”，但找不到该表。
+        <Association Name="FK_USER_FUN_REFERENCE_FUNCTION" />-->
+        <!--生成过程中发现错误:
+错误 6004: 某个关系引用了表“HXXF.USER_FUNCTION”，但找不到该表。
+        <Association Name="FK_USER_FUN_REFERENCE_USERINFO" />-->
         <Association Name="FK_USERDEPARTMENT_DEPARTMENTID">
           <End Role="DEPARTMENT" Type="Self.DEPARTMENT" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -257,18 +276,6 @@
             </Principal>
             <Dependent Role="USERINFO">
               <PropertyRef Name="USERTYPEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_USERLEVE_REFERENCE_MAPLEVEL">
-          <End Role="MAPLEVEL" Type="Self.MAPLEVEL" Multiplicity="0..1" />
-          <End Role="USERLEVEL" Type="Self.USERLEVEL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAPLEVEL">
-              <PropertyRef Name="LEVELID" />
-            </Principal>
-            <Dependent Role="USERLEVEL">
-              <PropertyRef Name="LEVELID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -317,7 +324,6 @@
           <EntitySet Name="FUNCTIONINFO" EntityType="Self.FUNCTIONINFO" Schema="HXXF" store:Type="Tables" />
           <EntitySet Name="FUNCTIONTYPE" EntityType="Self.FUNCTIONTYPE" Schema="HXXF" store:Type="Tables" />
           <EntitySet Name="LOGIN_LOG" EntityType="Self.LOGIN_LOG" Schema="HXXF" store:Type="Tables" />
-          <EntitySet Name="MAPLEVEL" EntityType="Self.MAPLEVEL" Schema="HXXF" store:Type="Tables" />
           <EntitySet Name="ROLE_FUNCTION" EntityType="Self.ROLE_FUNCTION" Schema="HXXF" store:Type="Tables" />
           <EntitySet Name="ROLEINFO" EntityType="Self.ROLEINFO" Schema="HXXF" store:Type="Tables" />
           <EntitySet Name="ROLETYPE" EntityType="Self.ROLETYPE" Schema="HXXF" store:Type="Tables" />
@@ -360,10 +366,6 @@ FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
             <End Role="USERTYPE" EntitySet="USERTYPE" />
             <End Role="USERINFO" EntitySet="USERINFO" />
           </AssociationSet>
-          <AssociationSet Name="FK_USERLEVE_REFERENCE_MAPLEVEL" Association="Self.FK_USERLEVE_REFERENCE_MAPLEVEL">
-            <End Role="MAPLEVEL" EntitySet="MAPLEVEL" />
-            <End Role="USERLEVEL" EntitySet="USERLEVEL" />
-          </AssociationSet>
           <AssociationSet Name="FK_USERLEVE_REFERENCE_USERINFO" Association="Self.FK_USERLEVE_REFERENCE_USERINFO">
             <End Role="USERINFO" EntitySet="USERINFO" />
             <End Role="USERLEVEL" EntitySet="USERLEVEL" />
@@ -377,7 +379,8 @@ FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
             <End Role="USER_ROLE" EntitySet="USER_ROLE" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -433,19 +436,6 @@ FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
           <Property Name="DEPARTMENTID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="DEPARTMENTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="MAPLEVEL">
-          <Key>
-            <PropertyRef Name="LEVELID" />
-          </Key>
-          <Property Name="LEVELID" Type="Decimal" Precision="20" Scale="0" Nullable="false" />
-          <Property Name="LON" Type="Decimal" Precision="8" Scale="5" />
-          <Property Name="LAT" Type="Decimal" Precision="8" Scale="5" />
-          <Property Name="LEVEL" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="ALT" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="MAPLEVEL1" Type="Decimal" Precision="8" Scale="5" />
-          <Property Name="NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="USERLEVEL" Relationship="Self.FK_USERLEVE_REFERENCE_MAPLEVEL" FromRole="MAPLEVEL" ToRole="USERLEVEL" />
-        </EntityType>
         <EntityType Name="ROLEINFO">
           <Key>
             <PropertyRef Name="ROLEID" />
@@ -477,7 +467,6 @@ FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
             <PropertyRef Name="SYSTEMID" />
           </Key>
           <Property Name="SYSTEMID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DESCRIPTION" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="CLIENTID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="CLIENTNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="FLOW" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
@@ -485,9 +474,11 @@ FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
           <Property Name="REDIRECTURIS" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ALLOWEDSCOPES" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ACCESSTOKENTYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="CLIENTURI" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="REQUIRECONSENT" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ALLOWREMEMBERCONSENT" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ALLOWACCESSTOALLSCOPES" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="USER_DEPARTMENT">
           <Key>
@@ -541,7 +532,6 @@ FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
           </Key>
           <Property Name="USERID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="LEVELID" Type="Decimal" Precision="20" Scale="0" />
-          <NavigationProperty Name="MAPLEVEL" Relationship="Self.FK_USERLEVE_REFERENCE_MAPLEVEL" FromRole="USERLEVEL" ToRole="MAPLEVEL" />
           <NavigationProperty Name="USERINFO" Relationship="Self.FK_USERLEVE_REFERENCE_USERINFO" FromRole="USERLEVEL" ToRole="USERINFO" />
         </EntityType>
         <Association Name="FK_USERDEPARTMENT_DEPARTMENTID">
@@ -567,18 +557,6 @@ FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
             </Principal>
             <Dependent Role="FUNCTIONINFO">
               <PropertyRef Name="FUNCTIONTYPEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_USERLEVE_REFERENCE_MAPLEVEL">
-          <End Role="MAPLEVEL" Type="Self.MAPLEVEL" Multiplicity="0..1" />
-          <End Role="USERLEVEL" Type="Self.USERLEVEL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAPLEVEL">
-              <PropertyRef Name="LEVELID" />
-            </Principal>
-            <Dependent Role="USERLEVEL">
-              <PropertyRef Name="LEVELID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -640,12 +618,11 @@ FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
           <End Role="ROLEINFO" Type="Self.ROLEINFO" Multiplicity="*" />
           <End Role="USERINFO" Type="Self.USERINFO" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="DbEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="DEPARTMENT" EntityType="Self.DEPARTMENT" />
           <EntitySet Name="FUNCTIONINFO" EntityType="Self.FUNCTIONINFO" />
           <EntitySet Name="FUNCTIONTYPE" EntityType="Self.FUNCTIONTYPE" />
           <EntitySet Name="LOGIN_LOG" EntityType="Self.LOGIN_LOG" />
-          <EntitySet Name="MAPLEVEL" EntityType="Self.MAPLEVEL" />
           <EntitySet Name="ROLEINFO" EntityType="Self.ROLEINFO" />
           <EntitySet Name="ROLETYPE" EntityType="Self.ROLETYPE" />
           <EntitySet Name="SYSTEMINFO" EntityType="Self.SYSTEMINFO" />
@@ -660,10 +637,6 @@ FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
           <AssociationSet Name="FK_FUNCTIONINFO_FUNCTIONTYPEID" Association="Self.FK_FUNCTIONINFO_FUNCTIONTYPEID">
             <End Role="FUNCTIONTYPE" EntitySet="FUNCTIONTYPE" />
             <End Role="FUNCTIONINFO" EntitySet="FUNCTIONINFO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_USERLEVE_REFERENCE_MAPLEVEL" Association="Self.FK_USERLEVE_REFERENCE_MAPLEVEL">
-            <End Role="MAPLEVEL" EntitySet="MAPLEVEL" />
-            <End Role="USERLEVEL" EntitySet="USERLEVEL" />
           </AssociationSet>
           <AssociationSet Name="FK_ROLEINFO_ROLETYPEID" Association="Self.FK_ROLEINFO_ROLETYPEID">
             <End Role="ROLETYPE" EntitySet="ROLETYPE" />
@@ -695,7 +668,7 @@ FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="DbEntities">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="DBEntities">
           <EntitySetMapping Name="DEPARTMENT">
             <EntityTypeMapping TypeName="Model.DEPARTMENT">
               <MappingFragment StoreEntitySet="DEPARTMENT">
@@ -748,19 +721,6 @@ FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="MAPLEVEL">
-            <EntityTypeMapping TypeName="Model.MAPLEVEL">
-              <MappingFragment StoreEntitySet="MAPLEVEL">
-                <ScalarProperty Name="LEVELID" ColumnName="LEVELID" />
-                <ScalarProperty Name="LON" ColumnName="LON" />
-                <ScalarProperty Name="LAT" ColumnName="LAT" />
-                <ScalarProperty Name="LEVEL" ColumnName="LEVEL" />
-                <ScalarProperty Name="ALT" ColumnName="ALT" />
-                <ScalarProperty Name="MAPLEVEL1" ColumnName="MAPLEVEL" />
-                <ScalarProperty Name="NAME" ColumnName="NAME" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ROLEINFO">
             <EntityTypeMapping TypeName="Model.ROLEINFO">
               <MappingFragment StoreEntitySet="ROLEINFO">
@@ -788,18 +748,19 @@ FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
           <EntitySetMapping Name="SYSTEMINFO">
             <EntityTypeMapping TypeName="Model.SYSTEMINFO">
               <MappingFragment StoreEntitySet="SYSTEMINFO">
-                <ScalarProperty Name="ALLOWREMEMBERCONSENT" ColumnName="ALLOWREMEMBERCONSENT" />
-                <ScalarProperty Name="REQUIRECONSENT" ColumnName="REQUIRECONSENT" />
-                <ScalarProperty Name="CLIENTURI" ColumnName="CLIENTURI" />
-                <ScalarProperty Name="ACCESSTOKENTYPE" ColumnName="ACCESSTOKENTYPE" />
-                <ScalarProperty Name="ALLOWEDSCOPES" ColumnName="ALLOWEDSCOPES" />
-                <ScalarProperty Name="REDIRECTURIS" ColumnName="REDIRECTURIS" />
-                <ScalarProperty Name="CLIENTSECRETS" ColumnName="CLIENTSECRETS" />
-                <ScalarProperty Name="FLOW" ColumnName="FLOW" />
-                <ScalarProperty Name="CLIENTNAME" ColumnName="CLIENTNAME" />
-                <ScalarProperty Name="CLIENTID" ColumnName="CLIENTID" />
                 <ScalarProperty Name="SYSTEMID" ColumnName="SYSTEMID" />
+                <ScalarProperty Name="CLIENTID" ColumnName="CLIENTID" />
+                <ScalarProperty Name="CLIENTNAME" ColumnName="CLIENTNAME" />
+                <ScalarProperty Name="FLOW" ColumnName="FLOW" />
+                <ScalarProperty Name="CLIENTSECRETS" ColumnName="CLIENTSECRETS" />
+                <ScalarProperty Name="REDIRECTURIS" ColumnName="REDIRECTURIS" />
+                <ScalarProperty Name="ALLOWEDSCOPES" ColumnName="ALLOWEDSCOPES" />
+                <ScalarProperty Name="ACCESSTOKENTYPE" ColumnName="ACCESSTOKENTYPE" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="CLIENTURI" ColumnName="CLIENTURI" />
+                <ScalarProperty Name="REQUIRECONSENT" ColumnName="REQUIRECONSENT" />
+                <ScalarProperty Name="ALLOWREMEMBERCONSENT" ColumnName="ALLOWREMEMBERCONSENT" />
+                <ScalarProperty Name="ALLOWACCESSTOALLSCOPES" ColumnName="ALLOWACCESSTOALLSCOPES" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -883,7 +844,7 @@ FROM "HXXF"."USERLEVEL" "USERLEVEL"</DefiningQuery>
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="无" />

@@ -17,7 +17,6 @@ namespace SSOServer.Db
         public decimal USERID { get; set; }
         public Nullable<decimal> LEVELID { get; set; }
     
-        public virtual MAPLEVEL MAPLEVEL { get; set; }
         public virtual USERINFO USERINFO { get; set; }
     }
 }

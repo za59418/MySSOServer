@@ -10,21 +10,21 @@ using System;
 
 namespace SSOServer
 {
-    public static class Clients
+    public class Clients
     {
         public static IEnumerable<Client> Get()
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load(string.Format(@"{0}\bin\identityServer\ServerLogin.xml", AppDomain.CurrentDomain.BaseDirectory));
+            doc.Load(string.Format(@"{0}\bin\Models\ServerLogin.xml", AppDomain.CurrentDomain.BaseDirectory));
             string redirecturis = doc.SelectSingleNode("Client/RedirectUris").InnerText;
             string authority = redirecturis + "identity";
             string clientid = doc.SelectSingleNode("Client/ClientId").InnerText;
             string clientname = doc.SelectSingleNode("Client/ClientName").InnerText;
             string clienturi = doc.SelectSingleNode("Client/ClientUri").InnerText;
             bool AllowAccessToAllScopes = bool.Parse(doc.SelectSingleNode("Client/AllowAccessToAllScopes").InnerText);
-                                                                                  
+
             List<Client> result = null;
-            using (DbEntities db = new Db.DbEntities())
+            using (DBEntities db = new Db.DBEntities())
             {
                 List<SYSTEMINFO> clients = db.SYSTEMINFO.Take<SYSTEMINFO>(5000).ToList<SYSTEMINFO>();
                 if (null != clients && clients.Count > 0)
@@ -48,8 +48,7 @@ namespace SSOServer
                                 client.REDIRECTURIS
                             },
 
-                            AllowedScopes = client.ALLOWEDSCOPES.Split(',').ToList<string>(),
-                            AccessTokenType = AccessTokenType.Reference
+                            AllowedScopes = client.ALLOWEDSCOPES.Split(',').ToList<string>()
                         };
 
                         if (null != client.CLIENTSECRETS)
@@ -59,6 +58,12 @@ namespace SSOServer
                                 new Secret(client.CLIENTSECRETS.Sha256())
                             };
                         }
+
+                        if (null != client.ACCESSTOKENTYPE)
+                        {
+                            c.AccessTokenType = AccessTokenType.Reference;
+                        }
+
                         result.Add(c);
                     }
 

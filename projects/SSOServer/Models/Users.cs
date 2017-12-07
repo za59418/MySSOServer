@@ -7,12 +7,12 @@ using SSOServer.Db;
 
 namespace SSOServer
 {
-    public static class Users
+    static class Users
     {
         public static List<InMemoryUser> Get()
         {
             List<InMemoryUser> result = null;
-            using (DbEntities db = new Db.DbEntities())
+            using (DBEntities db = new DBEntities())
             {
                 List<USERINFO> users = db.USERINFO.Take<USERINFO>(5000).ToList<USERINFO>();
                 if (null != users && users.Count > 0)

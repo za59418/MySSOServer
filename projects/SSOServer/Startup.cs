@@ -2,7 +2,6 @@
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OpenIdConnect;
 using Owin;
 using System;
@@ -22,27 +21,28 @@ using System.Web;
 using System.Net;
 using System.Net.Security;
 using System.Xml;
+using SSOServer.Controllers;
 
 [assembly: OwinStartup(typeof(SSOServer.Startup))]
+
 namespace SSOServer
 {
     public class Startup
     {
-        public static IdentityServerServiceFactory factory = null;
-
         public void Configuration(IAppBuilder app)
         {
             AntiForgeryConfig.UniqueClaimTypeIdentifier = Constants.ClaimTypes.Subject;
             JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
 
-            factory = new IdentityServerServiceFactory()
-                            .UseInMemoryUsers(Users.Get())
-                            .UseInMemoryClients(Clients.Get())
-                            .UseInMemoryScopes(Scopes.Get());
+            var factory = new IdentityServerServiceFactory()
+                        .UseInMemoryUsers(Users.Get())
+                        .UseInMemoryClients(Clients.Get())
+                        .UseInMemoryScopes(Scopes.Get());
 
-            //自定义登陆界面
+            // Use the Mvc View Service instead of the default
             factory.ViewService = new Registration<IViewService, MvcViewService<LogonWorkflowController>>();
 
+            // These registrations are also needed since these are dealt with using non-standard construction
             factory.Register(new Registration<HttpContext>(resolver => HttpContext.Current));
             factory.Register(new Registration<HttpContextBase>(resolver => new HttpContextWrapper(resolver.Resolve<HttpContext>())));
             factory.Register(new Registration<HttpRequestBase>(resolver => resolver.Resolve<HttpContextBase>().Request));
@@ -50,17 +50,19 @@ namespace SSOServer
             factory.Register(new Registration<HttpServerUtilityBase>(resolver => resolver.Resolve<HttpContextBase>().Server));
             factory.Register(new Registration<HttpSessionStateBase>(resolver => resolver.Resolve<HttpContextBase>().Session));
 
+            var options = new IdentityServerOptions
+            {
+                SiteName = "SSO 单点登陆系统",
+                SigningCertificate = Certificate.Load(),
+                Factory = factory
+            };
+
             app.Map("/identity", idsrvApp =>
             {
-                idsrvApp.UseIdentityServer(new IdentityServerOptions
-                {
-                    SiteName = "SSO 单点登陆系统",
-                    SigningCertificate = LoadCertificate(),
-                    Factory = factory
-                });
-                //证书处理
+                idsrvApp.UseIdentityServer(options);
+                 //证书处理
                 ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidate;
-            });
+           });
 
             app.UseResourceAuthorization(new AuthorizationManager());
 
@@ -69,9 +71,8 @@ namespace SSOServer
                 AuthenticationType = "Cookies"
             });
 
-
             XmlDocument doc = new XmlDocument();
-            doc.Load(string.Format(@"{0}\bin\identityServer\ServerLogin.xml", AppDomain.CurrentDomain.BaseDirectory));
+            doc.Load(string.Format(@"{0}\bin\Models\ServerLogin.xml", AppDomain.CurrentDomain.BaseDirectory));
             string redirecturis = doc.SelectSingleNode("Client/RedirectUris").InnerText;
             string authority = redirecturis + "identity";
             string clientid = doc.SelectSingleNode("Client/ClientId").InnerText;
@@ -114,12 +115,6 @@ namespace SSOServer
                     }
                 }
             });
-        }
-
-        X509Certificate2 LoadCertificate()
-        {
-            return new X509Certificate2(
-                string.Format(@"{0}\bin\identityServer\idsrv3test.pfx", AppDomain.CurrentDomain.BaseDirectory), "idsrv3test");
         }
 
         //证书处理
