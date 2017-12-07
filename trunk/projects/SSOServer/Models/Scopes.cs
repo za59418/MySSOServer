@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SSOServer
 {
-    public static class Scopes
+    public class Scopes
     {
         public static IEnumerable<Scope> Get()
         {
@@ -38,6 +38,7 @@ namespace SSOServer
                             new Secret("secret".Sha256())
                         }
                     },
+
                     new Scope
                     {
                         Name = "read",

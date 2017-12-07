@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace SSOServer
+namespace SSOServer.Controllers
 {
     using System.Web.Mvc;
     using IdentityServer3.Core.Models;

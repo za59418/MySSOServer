@@ -41,21 +41,21 @@
                 {
                     foreach (SYSTEMINFO client in Model)
                     {
-                    <tr class="unread">
-                        <td class="name" style="color:green;font-weight:bold;">
-                            <i class="star"></i>
-                            @client.CLIENTID
-                        </td>
-                        <td>@client.CLIENTNAME</td>
-                        <td class="subject">
-                            @client.ALLOWEDSCOPES
-                        </td>
-                        <td >
-                            @client.REDIRECTURIS
-                        </td>
-                        <td class="text-right">@(client.REQUIRECONSENT == "false" ? "否" : "是")</td>
-                        <td><a onclick="return RedAlert();" href="@Url.Action("DeleteClient", "Home", new { SYSTEMID = client.SYSTEMID })">删除</a></td>
-                    </tr>
+                        <tr class="unread">
+                            <td class="name" style="color:green;font-weight:bold;">
+                                <i class="star"></i>
+                                @client.CLIENTID
+                            </td>
+                            <td>@client.CLIENTNAME</td>
+                            <td class="subject">
+                                @client.ALLOWEDSCOPES
+                            </td>
+                            <td>
+                                @client.REDIRECTURIS
+                            </td>
+                            <td class="text-right">@(client.REQUIRECONSENT == "false" ? "否" : "是")</td>
+                            <td><a onclick="return RedAlert();" href="@Url.Action("DeleteClient", "Home", new { SYSTEMID = client.SYSTEMID })">删除</a></td>
+                        </tr>
                     }
                 }
             </table>

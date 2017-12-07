@@ -13,10 +13,10 @@ namespace SSOServer.Db
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class DbEntities : DbContext
+    public partial class DBEntities : DbContext
     {
-        public DbEntities()
-            : base("name=DbEntities")
+        public DBEntities()
+            : base("name=DBEntities")
         {
         }
     
@@ -29,7 +29,6 @@ namespace SSOServer.Db
         public virtual DbSet<FUNCTIONINFO> FUNCTIONINFO { get; set; }
         public virtual DbSet<FUNCTIONTYPE> FUNCTIONTYPE { get; set; }
         public virtual DbSet<LOGIN_LOG> LOGIN_LOG { get; set; }
-        public virtual DbSet<MAPLEVEL> MAPLEVEL { get; set; }
         public virtual DbSet<ROLEINFO> ROLEINFO { get; set; }
         public virtual DbSet<ROLETYPE> ROLETYPE { get; set; }
         public virtual DbSet<SYSTEMINFO> SYSTEMINFO { get; set; }

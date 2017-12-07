@@ -15,7 +15,6 @@ namespace SSOServer.Db
     public partial class SYSTEMINFO
     {
         public decimal SYSTEMID { get; set; }
-        public string DESCRIPTION { get; set; }
         public string CLIENTID { get; set; }
         public string CLIENTNAME { get; set; }
         public string FLOW { get; set; }
@@ -23,8 +22,10 @@ namespace SSOServer.Db
         public string REDIRECTURIS { get; set; }
         public string ALLOWEDSCOPES { get; set; }
         public string ACCESSTOKENTYPE { get; set; }
+        public string DESCRIPTION { get; set; }
         public string CLIENTURI { get; set; }
         public string REQUIRECONSENT { get; set; }
         public string ALLOWREMEMBERCONSENT { get; set; }
+        public string ALLOWACCESSTOALLSCOPES { get; set; }
     }
 }

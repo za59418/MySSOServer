@@ -5,15 +5,13 @@ using System.Web;
 using System.Web.Mvc;
 using System.Security.Claims;
 using Thinktecture.IdentityModel.Mvc;
-using IdentityServer3.Core.Models;
-using SSOServer;
 using SSOServer.Db;
 
 namespace SSOServer.Controllers
 {
     public class HomeController : Controller
     {
-        private DbEntities db = new DbEntities();
+        private DBEntities db = new DBEntities();
         public ActionResult Index()
         {
             IEnumerable<SYSTEMINFO> clients = null;
@@ -67,12 +65,6 @@ namespace SSOServer.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
-        }
-
-        public ActionResult Logout()
-        {
-            Request.GetOwinContext().Authentication.SignOut();
-            return Redirect("/");
         }
     }
 }

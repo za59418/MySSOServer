@@ -15,7 +15,7 @@ namespace SSOApi
 
             app.UseIdentityServerBearerTokenAuthentication(new IdentityServerBearerTokenAuthenticationOptions
             {
-                Authority = "https://localhost:44357/identity",
+                Authority = "https://localhost:44318/identity",
                 RequiredScopes = new[] { "logon" },
 
                 // client credentials for the introspection endpoint
