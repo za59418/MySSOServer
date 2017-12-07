@@ -32,10 +32,10 @@ namespace WebApp
             {
                 AuthenticationType = "oidc",
                 SignInAsAuthenticationType = "Cookies",
-                Authority = "https://192.168.1.115:44319/identity/",
-                ClientId = "webformClient",
-                RedirectUri = "http://localhost/webformClient/",
-                PostLogoutRedirectUri = "http://localhost/webformClient/",
+                Authority = "https://localhost:44357/identity/",
+                ClientId = "webFormClient",
+                RedirectUri = "http://localhost:10066/",
+                PostLogoutRedirectUri = "http://localhost:10066/",
                 ResponseType = "id_token token",
                 Scope = "openid profile email",
                 UseTokenLifetime = false,
@@ -57,7 +57,7 @@ namespace WebApp
                         {
                             claims_to_keep.Add(new Claim("access_token", n.ProtocolMessage.AccessToken));
 
-                            var userInfoClient = new UserInfoClient(new Uri("https://192.168.1.115:44319/identity/connect/userinfo"), n.ProtocolMessage.AccessToken);
+                            var userInfoClient = new UserInfoClient(new Uri("https://localhost:44357/identity/connect/userinfo"), n.ProtocolMessage.AccessToken);
                             var userInfoResponse = await userInfoClient.GetAsync();
                             var userInfoClaims = userInfoResponse.Claims
                                 .Where(x => x.Item1 != "sub") // filter sub since we're already getting it from id_token
