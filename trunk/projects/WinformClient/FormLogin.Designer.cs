@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.ssoLoginCtrl1 = new DCI.SSO.ClientLib.SSOLoginCtrl();
             this.SuspendLayout();
             // 
-            // webBrowser1
+            // ssoLoginCtrl1
             // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(614, 592);
-            this.webBrowser1.TabIndex = 0;
+            this.ssoLoginCtrl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ssoLoginCtrl1.Location = new System.Drawing.Point(0, 0);
+            this.ssoLoginCtrl1.Name = "ssoLoginCtrl1";
+            this.ssoLoginCtrl1.Size = new System.Drawing.Size(614, 592);
+            this.ssoLoginCtrl1.TabIndex = 0;
+            this.ssoLoginCtrl1.Window = null;
             // 
             // FormLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(614, 592);
-            this.Controls.Add(this.webBrowser1);
+            this.Controls.Add(this.ssoLoginCtrl1);
             this.Name = "FormLogin";
             this.Text = "登陆";
             this.ResumeLayout(false);
@@ -54,6 +54,6 @@
 
         #endregion
 
-        private System.Windows.Forms.WebBrowser webBrowser1;
+        private DCI.SSO.ClientLib.SSOLoginCtrl ssoLoginCtrl1;
     }
 }
