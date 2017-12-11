@@ -36,21 +36,51 @@ namespace SSOServer
                         {
                             ClientId = client.CLIENTID,
                             ClientName = client.CLIENTNAME,
-                            Flow = Flows.Implicit,
-
-                            ClientUri = client.CLIENTURI,
-
                             RequireConsent = bool.Parse(client.REQUIRECONSENT),
                             AllowRememberConsent = bool.Parse(client.ALLOWREMEMBERCONSENT),
-
                             RedirectUris = new List<string>
                             {
                                 client.REDIRECTURIS
                             },
-
                             AllowedScopes = client.ALLOWEDSCOPES.Split(',').ToList<string>()
                         };
 
+                        #region flow
+                        if (null != client.FLOW)
+                        {
+                            switch (client.FLOW)
+                            {
+                                case "AuthorizationCode":
+                                    c.Flow = Flows.AuthorizationCode;
+                                    break;
+                                case "Implicit":
+                                    c.Flow = Flows.Implicit;
+                                    break;
+                                case "Hybrid":
+                                    c.Flow = Flows.Hybrid;
+                                    break;
+                                case "ClientCredentials":
+                                    c.Flow = Flows.ClientCredentials;
+                                    break;
+                                case "ResourceOwner":
+                                    c.Flow = Flows.ResourceOwner;
+                                    break;
+                                case "Custom":
+                                    c.Flow = Flows.Custom;
+                                    break;
+                                case "AuthorizationCodeWithProofKey":
+                                    c.Flow = Flows.AuthorizationCodeWithProofKey;
+                                    break;
+                                case "HybridWithProofKey":
+                                    c.Flow = Flows.HybridWithProofKey;
+                                    break;
+                            }
+                        }
+                        #endregion
+                        if(null!=client.CLIENTURI)
+                        {
+                            c.ClientUri = client.CLIENTURI;
+                        }
                         if (null != client.CLIENTSECRETS)
                         {
                             c.ClientSecrets = new List<Secret>
@@ -58,12 +88,18 @@ namespace SSOServer
                                 new Secret(client.CLIENTSECRETS.Sha256())
                             };
                         }
-
                         if (null != client.ACCESSTOKENTYPE)
                         {
-                            c.AccessTokenType = AccessTokenType.Reference;
+                            switch (client.FLOW)
+                            {
+                                case "Reference":
+                                    c.AccessTokenType = AccessTokenType.Reference;
+                                    break;
+                                case "Jwt":
+                                    c.AccessTokenType = AccessTokenType.Jwt;
+                                    break;
+                            }
                         }
-
                         result.Add(c);
                     }
 
