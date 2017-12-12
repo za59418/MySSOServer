@@ -29,9 +29,19 @@ namespace WinformClient
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            FormLogin loginForm = new WinformClient.FormLogin();
+            FormLogin loginForm = new WinformClient.FormLogin(ServerUrl);
             loginForm.mainForm = this;
             loginForm.ShowDialog();
-        }        
+        }
+
+        public string ServerUrl {
+            get { return textBox2.Text; }
+            set { textBox2.Text = value; }
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            ServerUrl = "https://localhost:44312/identity";
+        }
     }
 }
