@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DCI.SSO.ClientLib">
-      <HintPath>..\..\release\DCI.SSO.ClientLib.dll</HintPath>
-    </Reference>
     <Reference Include="IdentityModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\IdentityModel.1.10.0\lib\net45\IdentityModel.dll</HintPath>
       <Private>True</Private>
@@ -110,6 +107,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DCI.SSO.ClientLib\DCI.SSO.ClientLib.csproj">
+      <Project>{734b3625-a6ec-4997-81a5-1019d5af2569}</Project>
+      <Name>DCI.SSO.ClientLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

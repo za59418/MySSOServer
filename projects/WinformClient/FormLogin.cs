@@ -15,11 +15,11 @@ namespace WinformClient
     {
         public FormMain mainForm { get; set; }
 
-        public FormLogin()
+        public FormLogin(string serverUrl)
         {
             InitializeComponent();
             this.ssoLoginCtrl1.Window = this;
-            this.ssoLoginCtrl1.Init("wpf.hybrid", "https://localhost:44318/identity", "http://localhost/wpf.hybrid");
+            this.ssoLoginCtrl1.Init("winformClient", serverUrl, "http://localhost/wpf.hybrid"); //"https://localhost:44312/identity"
             this.ssoLoginCtrl1.Done += _login_Done;
             this.ssoLoginCtrl1.LoginAsync();
         }
