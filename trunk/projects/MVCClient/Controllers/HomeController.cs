@@ -1,35 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
-using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using DCI.SSO.ClientLib;
 
 namespace MVCClient.Controllers
 {
     public class HomeController : Controller
     {
-
-        SSOProvider obj = new SSOProvider(
-            "mvcClient",
-            "https://192.168.1.115:44319/identity",
-            "http://192.168.1.115/mvcClient/Home/SignInCallback"
-        );
-
         public ActionResult Index()
         {
-            string ssoUrl = obj.CreateUrl(this);
-            return Redirect(ssoUrl);
+            return View();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> SignInCallback()
+        public ActionResult About()
         {
-            obj.ValidateAndSignIn(this);
-            return View("Index");
+            ViewBag.Message = "Your application description page.";
+
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
         }
     }
 }
