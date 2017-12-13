@@ -1,19 +1,20 @@
 ﻿using Owin;
 using Microsoft.Owin;
+using DCI.SSO.ClientLib;
 
-[assembly: OwinStartup(typeof(WebApp.Startup))]
-namespace WebApp
+[assembly: OwinStartup(typeof(WebformClient.Startup))]
+namespace WebformClient
 {
     public class Startup
     {
         public void Configuration(IAppBuilder app)
         {
-            DCI.SSO.ClientLib.WebformClient client = new DCI.SSO.ClientLib.WebformClient(
+            SSOProvider sso = new SSOProvider(
                 "webFormClient",
                 "https://192.168.1.115:44319/identity/",
                 "http://192.168.1.115/webformClient/"
                 );
-            client.Configuration(app);
+            sso.Configuration(app);
         }
     }
 }
