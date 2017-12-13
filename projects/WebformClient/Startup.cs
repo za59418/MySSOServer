@@ -10,6 +10,9 @@ using System.Linq;
 using System.Security.Claims;
 using IdentityModel.Client;
 using Microsoft.IdentityModel.Protocols;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 [assembly: OwinStartup(typeof(WebApp.Startup))]
 
@@ -19,6 +22,9 @@ namespace WebApp
     {
         public void Configuration(IAppBuilder app)
         {
+            //证书处理
+            ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidate;
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
                 AuthenticationType = "Cookies",
@@ -88,5 +94,12 @@ namespace WebApp
             });
             app.UseStageMarker(PipelineStage.Authenticate);
         }
+
+        //证书处理
+        private static bool RemoteCertificateValidate(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors error)
+        {
+            return true;
+        }
+
     }
 }

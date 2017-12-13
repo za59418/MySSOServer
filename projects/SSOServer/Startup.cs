@@ -31,6 +31,9 @@ namespace SSOServer
     {
         public void Configuration(IAppBuilder app)
         {
+            //证书处理
+            ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidate;
+
             AntiForgeryConfig.UniqueClaimTypeIdentifier = Constants.ClaimTypes.Subject;
             JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
 
@@ -60,9 +63,7 @@ namespace SSOServer
             app.Map("/identity", idsrvApp =>
             {
                 idsrvApp.UseIdentityServer(options);
-                 //证书处理
-                ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidate;
-           });
+            });
 
             app.UseResourceAuthorization(new AuthorizationManager());
 

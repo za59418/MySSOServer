@@ -83,12 +83,6 @@
     <Compile Include="OidcClient\LoginResult.cs" />
     <Compile Include="OidcClient\OidcSettings.cs" />
     <Compile Include="OidcClient\ValidationResult.cs" />
-    <Compile Include="SSOLogin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SSOLogin.Designer.cs">
-      <DependentUpon>SSOLogin.cs</DependentUpon>
-    </Compile>
     <Compile Include="SSOLoginCtrl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -99,9 +93,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SSOLogin.resx">
-      <DependentUpon>SSOLogin.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="SSOLoginCtrl.resx">
       <DependentUpon>SSOLoginCtrl.cs</DependentUpon>
     </EmbeddedResource>

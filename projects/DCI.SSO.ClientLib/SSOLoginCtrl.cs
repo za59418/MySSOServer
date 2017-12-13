@@ -9,6 +9,8 @@ using System.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Net;
+using System.Net.Security;
 
 using IdentityModel;
 using IdentityModel.Client;
@@ -46,6 +48,9 @@ namespace DCI.SSO.ClientLib
 
         public async Task LoginAsync()
         {
+            //证书处理
+            ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidate;
+
             if (_config == null)
             {
                 await LoadOpenIdConnectConfigurationAsync();
@@ -253,5 +258,12 @@ namespace DCI.SSO.ClientLib
                 return null;
             }
         }
+
+        //证书处理
+        private static bool RemoteCertificateValidate(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors error)
+        {
+            return true;
+        }
+
     }
 }
