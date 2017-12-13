@@ -1,9 +1,5 @@
-﻿using Microsoft.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Owin;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens;
+﻿using Owin;
+using Microsoft.Owin;
 using DCI.SSO.ClientLib;
 
 [assembly: OwinStartup(typeof(MVCClient.Startup))]
@@ -13,7 +9,12 @@ namespace MVCClient
     {
         public void Configuration(IAppBuilder app)
         {
-            SSOProvider.Configuration(app);
+            SSOProvider sso = new SSOProvider(
+                "mvcClient",
+                "https://192.168.1.115:44319/identity/",
+                "http://192.168.1.115/mvcClient/"
+                );
+            sso.Configuration(app);
         }
     }
 }
