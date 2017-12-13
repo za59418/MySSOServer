@@ -8,9 +8,9 @@ namespace SSOServer
         public static X509Certificate2 Load()
         {
             var assembly = typeof(Certificate).Assembly;
-            using (var stream = assembly.GetManifestResourceStream("SSOServer.Models.idsrv3test.pfx"))
+            using (var stream = assembly.GetManifestResourceStream("SSOServer.Models.chinadci.pfx"))
             {
-                return new X509Certificate2(ReadStream(stream), "idsrv3test");
+                return new X509Certificate2(ReadStream(stream), "chinadci");
             }
         }
 
