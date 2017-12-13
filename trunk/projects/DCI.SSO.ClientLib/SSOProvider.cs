@@ -1,41 +1,23 @@
 ﻿using System;
-using System.Web;
-using System.Web.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
+using System.Net;
+using System.Net.Security;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
-using System.IdentityModel;
+using System.Threading.Tasks;
 using System.IdentityModel.Tokens;
-
+using IdentityModel.Client;
 using Owin;
 using Microsoft.Owin;
-using Microsoft.Owin.Security;
+using Microsoft.Owin.Extensions;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols;
 
 namespace DCI.SSO.ClientLib
 {
     public class SSOProvider
     {
-        //public ActionResult Index(Controller controller)
-        //{
-        //    SSOProvider obj = new SSOProvider(
-        //        "mvcClient", 
-        //        "https://192.168.1.115:44319/identity", 
-        //        "http://localhost/mvcClient/Home/SignInCallback"
-        //        );
-        //    string ssoUrl = obj.CreateUrl(controller);
-
-        //    return controller.Redirect(url);
-        //}
-
-        //[HttpPost]
-        //public async Task<ActionResult> SignInCallback(Controller controller)
-        //{
-        //    ValidateAndSignIn(controller);
-        //    return controller.View("Index");
-        //}
-
         private string ClientId = null;
         private string ServerUrl = null;
         private string ClientUrl = null;
@@ -52,111 +34,85 @@ namespace DCI.SSO.ClientLib
             this.ClientUrl = ClientUrl;
         }
 
-        /// <summary>
-        /// 配置身份验证方式
-        /// </summary>
-        /// <param name="app">Startup中的IAppBuilder</param>
-        public static void Configuration(IAppBuilder app)
+        public void Configuration(IAppBuilder app)
         {
-            JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
+            //证书处理
+            ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidate;
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
-                AuthenticationType = "Cookies"
+                AuthenticationType = "Cookies",
+                ExpireTimeSpan = TimeSpan.FromMinutes(10),
+                SlidingExpiration = true
             });
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            JwtSecurityTokenHandler.InboundClaimTypeMap.Clear();
+
+            app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
             {
-                AuthenticationType = "TempCookie",
-                AuthenticationMode = AuthenticationMode.Passive
+                AuthenticationType = "oidc",
+                SignInAsAuthenticationType = "Cookies",
+                Authority = ServerUrl,
+                ClientId = ClientId,
+                RedirectUri = ClientUrl,
+                PostLogoutRedirectUri = ClientUrl,
+                ResponseType = "id_token token",
+                Scope = "openid profile email",
+                UseTokenLifetime = false,
+                Notifications = new OpenIdConnectAuthenticationNotifications
+                {
+                    SecurityTokenValidated = async n =>
+                    {
+                        var claims_to_exclude = new[]
+                        {
+                            "aud", "iss", "nbf", "exp", "nonce", "iat", "at_hash"
+                        };
+
+                        var claims_to_keep =
+                            n.AuthenticationTicket.Identity.Claims
+                            .Where(x => false == claims_to_exclude.Contains(x.Type)).ToList();
+                        claims_to_keep.Add(new Claim("id_token", n.ProtocolMessage.IdToken));
+
+                        if (n.ProtocolMessage.AccessToken != null)
+                        {
+                            claims_to_keep.Add(new Claim("access_token", n.ProtocolMessage.AccessToken));
+
+                            var userInfoClient = new UserInfoClient(new Uri(ServerUrl + "/connect/userinfo"), n.ProtocolMessage.AccessToken);
+                            var userInfoResponse = await userInfoClient.GetAsync();
+                            var userInfoClaims = userInfoResponse.Claims
+                                .Where(x => x.Item1 != "sub") // filter sub since we're already getting it from id_token
+                                .Select(x => new Claim(x.Item1, x.Item2));
+                            claims_to_keep.AddRange(userInfoClaims);
+                        }
+
+                        var ci = new ClaimsIdentity(
+                            n.AuthenticationTicket.Identity.AuthenticationType,
+                            "name", "role");
+                        ci.AddClaims(claims_to_keep);
+
+                        n.AuthenticationTicket = new Microsoft.Owin.Security.AuthenticationTicket(
+                            ci, n.AuthenticationTicket.Properties
+                        );
+                    },
+                    RedirectToIdentityProvider = n =>
+                    {
+                        if (n.ProtocolMessage.RequestType == OpenIdConnectRequestType.LogoutRequest)
+                        {
+                            var id_token = n.OwinContext.Authentication.User.FindFirst("id_token")?.Value;
+                            n.ProtocolMessage.IdTokenHint = id_token;
+                        }
+
+                        return Task.FromResult(0);
+                    }
+                }
             });
+            app.UseStageMarker(PipelineStage.Authenticate);
         }
 
-        /// <summary>
-        /// 生成单点登陆服务器完整地址
-        /// </summary>
-        /// <param name="controller">MVC控制器</param>
-        /// <returns>登陆地址</returns>
-        public string CreateUrl(Controller controller)
+        //证书处理
+        private static bool RemoteCertificateValidate(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors error)
         {
-            var state = Guid.NewGuid().ToString("N");
-            var nonce = Guid.NewGuid().ToString("N");
-
-            var url = this.ServerUrl + "/connect/authorize" +
-                "?client_id=" + this.ClientId +
-                "&response_type=id_token" +
-                "&scope=openid" +
-                "&redirect_uri=" + this.ClientUrl +
-                "&response_mode=form_post" +
-                "&state=" + state +
-                "&nonce=" + nonce;
-            SetTempCookie(controller, state, nonce);
-            return url;
-        }
-
-        /// <summary>
-        /// 验证身份并登陆
-        /// </summary>
-        /// <param name="controller">MVC控制器</param>
-        public async void ValidateAndSignIn(Controller controller)
-        {
-            var claims = await ValidateIdentityTokenAsync(controller);
-            var id = new ClaimsIdentity(claims, "Cookies");
-            controller.Request.GetOwinContext().Authentication.SignIn(id);
-        }
-
-        private async Task<IEnumerable<Claim>> ValidateIdentityTokenAsync(Controller controller)
-        {
-            var token = controller.Request.Form["id_token"];
-            var state = controller.Request.Form["state"];
-
-            var certString = "MIIDBTCCAfGgAwIBAgIQNQb+T2ncIrNA6cKvUA1GWTAJBgUrDgMCHQUAMBIxEDAOBgNVBAMTB0RldlJvb3QwHhcNMTAwMTIwMjIwMDAwWhcNMjAwMTIwMjIwMDAwWjAVMRMwEQYDVQQDEwppZHNydjN0ZXN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqnTksBdxOiOlsmRNd+mMS2M3o1IDpK4uAr0T4/YqO3zYHAGAWTwsq4ms+NWynqY5HaB4EThNxuq2GWC5JKpO1YirOrwS97B5x9LJyHXPsdJcSikEI9BxOkl6WLQ0UzPxHdYTLpR4/O+0ILAlXw8NU4+jB4AP8Sn9YGYJ5w0fLw5YmWioXeWvocz1wHrZdJPxS8XnqHXwMUozVzQj+x6daOv5FmrHU1r9/bbp0a1GLv4BbTtSh4kMyz1hXylho0EvPg5p9YIKStbNAW9eNWvv5R8HN7PPei21AsUqxekK0oW9jnEdHewckToX7x5zULWKwwZIksll0XnVczVgy7fCFwIDAQABo1wwWjATBgNVHSUEDDAKBggrBgEFBQcDATBDBgNVHQEEPDA6gBDSFgDaV+Q2d2191r6A38tBoRQwEjEQMA4GA1UEAxMHRGV2Um9vdIIQLFk7exPNg41NRNaeNu0I9jAJBgUrDgMCHQUAA4IBAQBUnMSZxY5xosMEW6Mz4WEAjNoNv2QvqNmk23RMZGMgr516ROeWS5D3RlTNyU8FkstNCC4maDM3E0Bi4bbzW3AwrpbluqtcyMN3Pivqdxx+zKWKiORJqqLIvN8CT1fVPxxXb/e9GOdaR8eXSmB0PgNUhM4IjgNkwBbvWC9F/lzvwjlQgciR7d4GfXPYsE1vf8tmdQaY8/PtdAkExmbrb9MihdggSoGXlELrPA91Yce+fiRcKY3rQlNWVd4DOoJ/cPXsXwry8pWjNCo5JD8Q+RQ5yZEy7YPoifwemLhTdsBz3hlZr28oCGJ3kbnpW0xGvQb3VHSTVVbeei0CfXoW6iz1";
-            var cert = new X509Certificate2(Convert.FromBase64String(certString));
-
-            var result = await controller.Request
-                .GetOwinContext()
-                .Authentication
-                .AuthenticateAsync("TempCookie");
-
-            if (result == null)
-            {
-                throw new InvalidOperationException("No temp cookie");
-            }
-
-            if (state != result.Identity.FindFirst("state").Value)
-            {
-                throw new InvalidOperationException("invalid state");
-            }
-
-            var parameters = new TokenValidationParameters
-            {
-                ValidAudience = this.ClientId,
-                ValidIssuer = this.ServerUrl,
-                IssuerSigningToken = new X509SecurityToken(cert)
-            };
-
-            var handler = new JwtSecurityTokenHandler();
-            SecurityToken jwt; 
-             var id = handler.ValidateToken(token, parameters, out jwt);
-
-            if (id.FindFirst("nonce").Value !=
-                result.Identity.FindFirst("nonce").Value)
-            {
-                throw new InvalidOperationException("Invalid nonce");
-            }
-
-            controller.Request.GetOwinContext().Authentication.SignOut("TempCookie");
-
-            return id.Claims;
-        }
-
-        private void SetTempCookie(Controller controller, string state, string nonce)
-        {
-            var tempId = new ClaimsIdentity("TempCookie");
-            tempId.AddClaim(new Claim("state", state));
-            tempId.AddClaim(new Claim("nonce", nonce));
-
-            controller.Request.GetOwinContext().Authentication.SignIn(tempId);
+            return true;
         }
     }
 }
