@@ -41,7 +41,7 @@ namespace WinformClient
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            ServerUrl = "https://localhost:44312/identity";
+            ServerUrl = "https://192.168.1.115:44319/identity";
         }
     }
 }

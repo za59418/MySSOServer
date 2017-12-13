@@ -15,7 +15,7 @@ namespace MVCClient.Controllers
 
         SSOProvider obj = new SSOProvider(
             "mvcClient",
-            "https://192.168.1.115:44318/identity",
+            "https://192.168.1.115:44319/identity",
             "http://192.168.1.115/mvcClient/Home/SignInCallback"
         );
 
