@@ -27,10 +27,25 @@ namespace SSOServer
                             Subject = "1",
                             Claims = new[]
                             {
-                            new Claim(Constants.ClaimTypes.Name, user.DISPLAYNAME),
-                            new Claim(Constants.ClaimTypes.NickName, user.NICKNAME),
-                            new Claim(Constants.ClaimTypes.Email, user.EMAIL)
-                        }
+                                new Claim(Constants.ClaimTypes.Name, user.USERNAME),
+                                new Claim(Constants.ClaimTypes.NickName, user.NICKNAME),
+                                new Claim(Constants.ClaimTypes.Email, user.EMAIL),
+                                new Claim("userid", user.USERID.ToString()),
+                                new Claim("username", null == user.USERNAME ? "" : user.USERNAME),
+                                new Claim("displayName", null == user.DISPLAYNAME ? "" : user.DISPLAYNAME),
+                                new Claim("shortName", null == user.SHORTNAME ? "" : user.SHORTNAME),
+                                new Claim("userTypeId", null == user.USERTYPEID ? "" : user.USERTYPEID.ToString()),
+                                new Claim("createTime", null == user.CREATETIME ? "" : user.CREATETIME),
+                                new Claim("description", null == user.DESCRIPTION ? "" : user.DESCRIPTION),
+                                new Claim("isLockedOut", null == user.ISLOCKEDOUT ? "false" : user.ISLOCKEDOUT.ToString()),
+                                new Claim("email", null == user.EMAIL ? "" : user.EMAIL),
+                                new Claim("nickName", null == user.NICKNAME ? "" :user.NICKNAME ),
+                                new Claim("updateTime", null == user.UPDATETIME ? "" : user.UPDATETIME),
+                                new Claim("weight", null == user.WEIGHT ? "" : user.WEIGHT.ToString()),
+                                new Claim("userImages", null == user.USERIMAGES ? "" : user.USERIMAGES),
+                                new Claim("sIndex", null == user.SINDEX ? "" : user.SINDEX.ToString()),
+                                new Claim("extraid", null == user.EXTRAID ? "" : user.EXTRAID)
+                            }
                         };
                         result.Add(u);
                     }

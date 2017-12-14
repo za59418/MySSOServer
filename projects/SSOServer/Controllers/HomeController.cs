@@ -15,7 +15,7 @@ namespace SSOServer.Controllers
         public ActionResult Index()
         {
             IEnumerable<SYSTEMINFO> clients = null;
-            clients = db.SYSTEMINFO.Take(5000);
+            clients = db.SYSTEMINFO.Take(5000).OrderBy(s => s.SYSTEMID);
             return View(clients);
         }
 

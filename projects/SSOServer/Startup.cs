@@ -1,26 +1,26 @@
-﻿using Microsoft.IdentityModel.Protocols;
-using Microsoft.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OpenIdConnect;
-using Owin;
-using System;
+﻿using System;
+using System.Xml;
+using System.Linq;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
-using System.Linq;
+using System.Web;
 using System.Web.Helpers;
+using System.Threading.Tasks;
+using System.Net;
+using System.Net.Security;
+using Owin;
+using Microsoft.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols;
 using IdentityServer3.Core;
 using IdentityServer3.Core.Services;
 using IdentityServer3.Core.Configuration;
 using IdentityModel.Client;
 using IdentityServer3.Core.Models;
-using System.Threading.Tasks;
-using System.Web;
-using System.Net;
-using System.Net.Security;
-using System.Xml;
 using SSOServer.Controllers;
 
 [assembly: OwinStartup(typeof(SSOServer.Startup))]
@@ -94,19 +94,45 @@ namespace SSOServer
                     SecurityTokenValidated = n =>
                     {
                         var id = n.AuthenticationTicket.Identity;
+                        var nid = new ClaimsIdentity(id.AuthenticationType);
 
-                        // we want to keep first name, last name, subject and roles
                         var niceName = id.FindFirst(Constants.ClaimTypes.NickName);
                         var sub = id.FindFirst(Constants.ClaimTypes.Subject);
 
-                        // create new identity and set name and role claim type
-                        var nid = new ClaimsIdentity(id.AuthenticationType);
-
                         nid.AddClaim(niceName);
                         nid.AddClaim(sub);
-
-                        // add some other app specific claim
                         nid.AddClaim(new Claim("app_specific", "some data"));
+
+                        //var userid = id.FindFirst("userid");
+                        //var username = id.FindFirst("username");
+                        //var DISPLAYNAME = id.FindFirst("DISPLAYNAME");
+                        //var SHORTNAME = id.FindFirst("SHORTNAME");
+                        //var USERTYPEID = id.FindFirst("USERTYPEID");
+                        //var CREATETIME = id.FindFirst("CREATETIME");
+                        //var DESCRIPTION = id.FindFirst("DESCRIPTION");
+                        //var ISLOCKEDOUT = id.FindFirst("ISLOCKEDOUT");
+                        //var EMAIL = id.FindFirst("EMAIL");
+                        //var NICKNAME = id.FindFirst("NICKNAME");
+                        //var UPDATETIME = id.FindFirst("UPDATETIME");
+                        //var WEIGHT = id.FindFirst("WEIGHT");
+                        //var USERIMAGES = id.FindFirst("USERIMAGES");
+                        //var SINDEX = id.FindFirst("SINDEX");
+                        //var EXTRAID = id.FindFirst("EXTRAID");
+
+                        //nid.AddClaim(username);
+                        //nid.AddClaim(DISPLAYNAME);
+                        //nid.AddClaim(SHORTNAME);
+                        //nid.AddClaim(USERTYPEID);
+                        //nid.AddClaim(CREATETIME);
+                        //nid.AddClaim(DESCRIPTION);
+                        //nid.AddClaim(ISLOCKEDOUT);
+                        //nid.AddClaim(EMAIL);
+                        //nid.AddClaim(NICKNAME);
+                        //nid.AddClaim(UPDATETIME);
+                        //nid.AddClaim(WEIGHT);
+                        //nid.AddClaim(USERIMAGES);
+                        //nid.AddClaim(SINDEX);
+                        //nid.AddClaim(EXTRAID);
 
                         n.AuthenticationTicket = new AuthenticationTicket(
                             nid,
