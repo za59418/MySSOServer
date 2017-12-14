@@ -48,19 +48,27 @@
         var xhr = new XMLHttpRequest();
         xhr.onload = function (e) {
             if (xhr.status >= 400) {
-                alert('ok');
+                $this.show({
+                    status: xhr.status,
+                    statusText: xhr.statusText,
+                    wwwAuthenticate: xhr.getResponseHeader("WWW-Authenticate")
+                });
             }
             else {
-                alert(JSON.parse(xhr.response));
+                $this.show(JSON.parse(xhr.response));
             }
         };
         xhr.onerror = function (e) {
-            alert("unknown http error");
+            $this.show("unknown http error");
         };
-        xhr.open("GET", "http://localhost:48545/user", true);
+        xhr.open("GET", "http://192.168.1.115/api/user", true);
         xhr.setRequestHeader("Authorization", "Bearer " + $this.token);
         xhr.send();
+    }
 
+    this.show = function (data) {
+        document.querySelector(".results").textContent += JSON.stringify(data, null, 2);
+        document.querySelector(".results").textContent += '\r\n';
     }
 
 
