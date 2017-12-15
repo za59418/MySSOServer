@@ -27,9 +27,6 @@ namespace SSOServer
                             Subject = "1",
                             Claims = new[]
                             {
-                                new Claim(Constants.ClaimTypes.Name, user.USERNAME),
-                                new Claim(Constants.ClaimTypes.NickName, user.NICKNAME),
-                                new Claim(Constants.ClaimTypes.Email, user.EMAIL),
                                 new Claim("userid", user.USERID.ToString()),
                                 new Claim("username", null == user.USERNAME ? "" : user.USERNAME),
                                 new Claim("displayName", null == user.DISPLAYNAME ? "" : user.DISPLAYNAME),

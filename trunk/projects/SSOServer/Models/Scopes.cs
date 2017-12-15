@@ -30,12 +30,31 @@ namespace SSOServer
                     {
                         Name = "logon",
                         DisplayName = "登陆",
-                        Type = ScopeType.Resource,
+                        Type = ScopeType.Identity,
                         Emphasize = false,
 
                         ScopeSecrets = new List<Secret>
                         {
                             new Secret("secret".Sha256())
+                        },
+
+                        Claims = new List<ScopeClaim> //用户信息
+                        {
+                            new ScopeClaim("userid"),
+                            new ScopeClaim("username"),
+                            new ScopeClaim("displayName"),
+                            new ScopeClaim("shortName"),
+                            new ScopeClaim("userTypeId"),
+                            new ScopeClaim("createTime"),
+                            new ScopeClaim("description"),
+                            new ScopeClaim("isLockedOut"),
+                            new ScopeClaim("email"),
+                            new ScopeClaim("nickName"),
+                            new ScopeClaim("updateTime"),
+                            new ScopeClaim("weight"),
+                            new ScopeClaim("userImages"),
+                            new ScopeClaim("sIndex"),
+                            new ScopeClaim("extraid")
                         }
                     },
 
