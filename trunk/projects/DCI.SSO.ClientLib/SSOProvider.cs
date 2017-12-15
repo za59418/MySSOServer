@@ -57,42 +57,32 @@ namespace DCI.SSO.ClientLib
                 RedirectUri = ClientUrl,
                 PostLogoutRedirectUri = ClientUrl,
                 ResponseType = "id_token token",
-                Scope = "openid profile email",
+                Scope = "openid logon",
                 UseTokenLifetime = false,
                 Notifications = new OpenIdConnectAuthenticationNotifications
                 {
                     SecurityTokenValidated = async n =>
                     {
-                        var claims_to_exclude = new[]
-                        {
-                            "aud", "iss", "nbf", "exp", "nonce", "iat", "at_hash"
-                        };
 
-                        var claims_to_keep =
-                            n.AuthenticationTicket.Identity.Claims
-                            .Where(x => false == claims_to_exclude.Contains(x.Type)).ToList();
-                        claims_to_keep.Add(new Claim("id_token", n.ProtocolMessage.IdToken));
+                        var id = new ClaimsIdentity(n.AuthenticationTicket.Identity.AuthenticationType);
+
+                        var userInfoClient = new UserInfoClient(new Uri(ServerUrl + "/connect/userinfo"), n.ProtocolMessage.AccessToken);
+                        var userInfoResponse = await userInfoClient.GetAsync();
+
+                        var userInfoClaims = userInfoResponse.GetClaimsIdentity().Claims
+                            .Where(x => x.Type != "sub")
+                            .Select(x => new Claim(x.Type, x.Value));
+                        id.AddClaims(userInfoClaims);
 
                         if (n.ProtocolMessage.AccessToken != null)
                         {
-                            claims_to_keep.Add(new Claim("access_token", n.ProtocolMessage.AccessToken));
-
-                            var userInfoClient = new UserInfoClient(new Uri(ServerUrl + "/connect/userinfo"), n.ProtocolMessage.AccessToken);
-                            var userInfoResponse = await userInfoClient.GetAsync();
-                            var userInfoClaims = userInfoResponse.Claims
-                                .Where(x => x.Item1 != "sub") // filter sub since we're already getting it from id_token
-                                .Select(x => new Claim(x.Item1, x.Item2));
-                            claims_to_keep.AddRange(userInfoClaims);
+                            id.AddClaim(new Claim("access_token", n.ProtocolMessage.AccessToken));
                         }
 
-                        var ci = new ClaimsIdentity(
-                            n.AuthenticationTicket.Identity.AuthenticationType,
-                            "name", "role");
-                        ci.AddClaims(claims_to_keep);
-
                         n.AuthenticationTicket = new Microsoft.Owin.Security.AuthenticationTicket(
-                            ci, n.AuthenticationTicket.Properties
-                        );
+                        new ClaimsIdentity(id.Claims, n.AuthenticationTicket.Identity.AuthenticationType),
+                        n.AuthenticationTicket.Properties);
+
                     },
                     RedirectToIdentityProvider = n =>
                     {

@@ -96,37 +96,8 @@ namespace SSOServer
                         var id = n.AuthenticationTicket.Identity;
                         var nid = new ClaimsIdentity(id.AuthenticationType);
 
-                        var userid = id.FindFirst("userid");
-                        var username = id.FindFirst("username");
-                        var displayName = id.FindFirst("displayName");
-                        var shortName = id.FindFirst("shortName");
-                        var userTypeId = id.FindFirst("userTypeId");
-                        var createTime = id.FindFirst("createTime");
-                        var description = id.FindFirst("description");
-                        var isLockedOut = id.FindFirst("isLockedOut");
-                        var email = id.FindFirst("email");
-                        var nickName = id.FindFirst("nickName");
-                        var updateTime = id.FindFirst("updateTime");
-                        var weight = id.FindFirst("weight");
-                        var userImages = id.FindFirst("userImages");
-                        var sIndex = id.FindFirst("sIndex");
-                        var extraid = id.FindFirst("extraid");
-
-                        nid.AddClaim(userid);
-                        nid.AddClaim(username);
-                        nid.AddClaim(displayName);
-                        nid.AddClaim(shortName);
-                        nid.AddClaim(userTypeId);
-                        nid.AddClaim(createTime);
-                        nid.AddClaim(description);
-                        nid.AddClaim(isLockedOut);
-                        nid.AddClaim(email);
-                        nid.AddClaim(nickName);
-                        nid.AddClaim(updateTime);
-                        nid.AddClaim(weight);
-                        nid.AddClaim(userImages);
-                        nid.AddClaim(sIndex);
-                        nid.AddClaim(extraid);
+                        var userinfo = id.FindFirst("userinfo");
+                        nid.AddClaim(userinfo);
 
                         n.AuthenticationTicket = new AuthenticationTicket(
                             nid,
