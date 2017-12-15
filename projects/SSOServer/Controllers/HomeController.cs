@@ -66,5 +66,11 @@ namespace SSOServer.Controllers
 
             return View();
         }
+
+        public ActionResult Logout()
+        {
+            Request.GetOwinContext().Authentication.SignOut();
+            return Redirect("Index");
+        }
     }
 }

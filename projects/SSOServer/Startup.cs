@@ -82,7 +82,7 @@ namespace SSOServer
             {
                 Authority = authority,
                 ClientId = clientid,
-                Scope = "openid profile roles",
+                Scope = "openid logon",
                 RedirectUri = redirecturis,
                 ResponseType = "id_token",
 
@@ -96,43 +96,37 @@ namespace SSOServer
                         var id = n.AuthenticationTicket.Identity;
                         var nid = new ClaimsIdentity(id.AuthenticationType);
 
-                        var niceName = id.FindFirst(Constants.ClaimTypes.NickName);
-                        var sub = id.FindFirst(Constants.ClaimTypes.Subject);
+                        var userid = id.FindFirst("userid");
+                        var username = id.FindFirst("username");
+                        var displayName = id.FindFirst("displayName");
+                        var shortName = id.FindFirst("shortName");
+                        var userTypeId = id.FindFirst("userTypeId");
+                        var createTime = id.FindFirst("createTime");
+                        var description = id.FindFirst("description");
+                        var isLockedOut = id.FindFirst("isLockedOut");
+                        var email = id.FindFirst("email");
+                        var nickName = id.FindFirst("nickName");
+                        var updateTime = id.FindFirst("updateTime");
+                        var weight = id.FindFirst("weight");
+                        var userImages = id.FindFirst("userImages");
+                        var sIndex = id.FindFirst("sIndex");
+                        var extraid = id.FindFirst("extraid");
 
-                        nid.AddClaim(niceName);
-                        nid.AddClaim(sub);
-                        nid.AddClaim(new Claim("app_specific", "some data"));
-
-                        //var userid = id.FindFirst("userid");
-                        //var username = id.FindFirst("username");
-                        //var DISPLAYNAME = id.FindFirst("DISPLAYNAME");
-                        //var SHORTNAME = id.FindFirst("SHORTNAME");
-                        //var USERTYPEID = id.FindFirst("USERTYPEID");
-                        //var CREATETIME = id.FindFirst("CREATETIME");
-                        //var DESCRIPTION = id.FindFirst("DESCRIPTION");
-                        //var ISLOCKEDOUT = id.FindFirst("ISLOCKEDOUT");
-                        //var EMAIL = id.FindFirst("EMAIL");
-                        //var NICKNAME = id.FindFirst("NICKNAME");
-                        //var UPDATETIME = id.FindFirst("UPDATETIME");
-                        //var WEIGHT = id.FindFirst("WEIGHT");
-                        //var USERIMAGES = id.FindFirst("USERIMAGES");
-                        //var SINDEX = id.FindFirst("SINDEX");
-                        //var EXTRAID = id.FindFirst("EXTRAID");
-
-                        //nid.AddClaim(username);
-                        //nid.AddClaim(DISPLAYNAME);
-                        //nid.AddClaim(SHORTNAME);
-                        //nid.AddClaim(USERTYPEID);
-                        //nid.AddClaim(CREATETIME);
-                        //nid.AddClaim(DESCRIPTION);
-                        //nid.AddClaim(ISLOCKEDOUT);
-                        //nid.AddClaim(EMAIL);
-                        //nid.AddClaim(NICKNAME);
-                        //nid.AddClaim(UPDATETIME);
-                        //nid.AddClaim(WEIGHT);
-                        //nid.AddClaim(USERIMAGES);
-                        //nid.AddClaim(SINDEX);
-                        //nid.AddClaim(EXTRAID);
+                        nid.AddClaim(userid);
+                        nid.AddClaim(username);
+                        nid.AddClaim(displayName);
+                        nid.AddClaim(shortName);
+                        nid.AddClaim(userTypeId);
+                        nid.AddClaim(createTime);
+                        nid.AddClaim(description);
+                        nid.AddClaim(isLockedOut);
+                        nid.AddClaim(email);
+                        nid.AddClaim(nickName);
+                        nid.AddClaim(updateTime);
+                        nid.AddClaim(weight);
+                        nid.AddClaim(userImages);
+                        nid.AddClaim(sIndex);
+                        nid.AddClaim(extraid);
 
                         n.AuthenticationTicket = new AuthenticationTicket(
                             nid,

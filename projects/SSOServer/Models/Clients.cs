@@ -101,8 +101,9 @@ namespace SSOServer
                             }
                         }
                         result.Add(c);
-                    }
+                    };
 
+                    //test login
                     result.Add(
                         new Client
                         {
@@ -116,7 +117,18 @@ namespace SSOServer
                             {
                                 redirecturis
                             },
-                            AllowAccessToAllScopes = AllowAccessToAllScopes
+                            ClientSecrets = new List<Secret>
+                            {
+                                new Secret("secret".Sha256())
+                            },
+                            AllowedScopes = new List<string>
+                            {
+                                Constants.StandardScopes.OpenId,
+                                "logon"
+                            },
+                            AllowAccessTokensViaBrowser = false,
+                            AccessTokenType = AccessTokenType.Reference
+                            //AllowAccessToAllScopes = AllowAccessToAllScopes
                         }
                     );
                 }
