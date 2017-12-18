@@ -30,8 +30,9 @@ namespace SSOServer
                     {
                         Name = "logon",
                         DisplayName = "登陆",
-                        Type = ScopeType.Identity,
-                        Emphasize = false,
+                        Type = ScopeType.Resource,
+                        Emphasize = true,
+                        ShowInDiscoveryDocument = false,
 
                         ScopeSecrets = new List<Secret>
                         {

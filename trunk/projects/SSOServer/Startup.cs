@@ -82,7 +82,7 @@ namespace SSOServer
             {
                 Authority = authority,
                 ClientId = clientid,
-                Scope = "openid logon",
+                Scope = "openid",
                 RedirectUri = redirecturis,
                 ResponseType = "id_token",
 
@@ -97,7 +97,10 @@ namespace SSOServer
                         var nid = new ClaimsIdentity(id.AuthenticationType);
 
                         var userinfo = id.FindFirst("userinfo");
-                        nid.AddClaim(userinfo);
+                        if (null != userinfo)
+                        {
+                            nid.AddClaim(userinfo);
+                        }
 
                         n.AuthenticationTicket = new AuthenticationTicket(
                             nid,
