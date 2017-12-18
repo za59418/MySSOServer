@@ -15,7 +15,8 @@
 
         function getUser()
         {
-            sso.getUser("http://192.168.1.115/api/user", function(data){
+            sso.getUser("http://192.168.1.115/api/user", function (data) {
+                //data为获取到的用户JSON串
                 document.querySelector(".results").textContent += JSON.stringify(data, null, 2);
             });
         }
