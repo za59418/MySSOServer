@@ -42,34 +42,30 @@
         }
     };
 
-    this.callApi = function () {
-
+    this.getUser = function (url, callback) {
         var xhr = new XMLHttpRequest();
         xhr.onload = function (e) {
             if (xhr.status >= 400) {
-                $this.show({
-                    status: xhr.status,
-                    statusText: xhr.statusText,
-                    wwwAuthenticate: xhr.getResponseHeader("WWW-Authenticate")
-                });
+
+                if (callback) {
+                    callback({
+                        status: xhr.status,
+                        statusText: xhr.statusText,
+                        wwwAuthenticate: xhr.getResponseHeader("WWW-Authenticate")
+                    });
+                }
             }
             else {
-                $this.show(JSON.parse(xhr.response));
+                callback(JSON.parse(xhr.response));
             }
         };
         xhr.onerror = function (e) {
-            $this.show("unknown http error");
+            callback({ "error": "获取用户出错！" });
         };
-        xhr.open("GET", "http://192.168.1.115/api/user", true);
+        xhr.open("GET", url, true);
         xhr.setRequestHeader("Authorization", "Bearer " + $this.token);
         xhr.send();
-    }
-
-    this.show = function (data) {
-        document.querySelector(".results").textContent += JSON.stringify(data, null, 2);
-        document.querySelector(".results").textContent += '\r\n';
-    }
-
+    };
 
     this.logout = function () {
         window.location = this.serverUrl + "/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(window.location.protocol + "//" + window.location.host + "/index.html") + "&id_token_hint=" + encodeURIComponent($this.token);
