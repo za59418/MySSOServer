@@ -1,6 +1,7 @@
 ﻿using Owin;
 using Microsoft.Owin;
 using DCI.SSO.ClientLib;
+using System.Threading.Tasks;
 
 [assembly: OwinStartup(typeof(WebformClient.Startup))]
 namespace WebformClient

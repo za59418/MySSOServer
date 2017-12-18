@@ -6,6 +6,8 @@ using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.IdentityModel.Tokens;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 using IdentityModel.Client;
 using Owin;
 using Microsoft.Owin;
@@ -21,6 +23,9 @@ namespace DCI.SSO.ClientLib
         private string ClientId = null;
         private string ServerUrl = null;
         private string ClientUrl = null;
+
+        private string Token = null;
+
         /// <summary>
         /// 单点登陆构造器
         /// </summary>
@@ -76,6 +81,8 @@ namespace DCI.SSO.ClientLib
 
                         if (n.ProtocolMessage.AccessToken != null)
                         {
+                            //初使化TOKEN
+                            this.Token = n.ProtocolMessage.AccessToken;
                             id.AddClaim(new Claim("access_token", n.ProtocolMessage.AccessToken));
                         }
 
@@ -99,6 +106,38 @@ namespace DCI.SSO.ClientLib
             app.UseStageMarker(PipelineStage.Authenticate);
         }
 
+        public async static Task<string> GetUser(string token, string apiUrl)
+        {
+            if (null != token)
+            {
+                var client = new HttpClient();
+                client.SetBearerToken(token);
+                var result = await client.GetStringAsync(apiUrl);
+
+                return result;
+            }
+            else
+            {
+                return "{\"error\":\"token获取失败！\"}";
+            }
+        }
+
+        public async Task<string> GetUser(string apiUrl)
+        {
+            if (null != this.Token)
+            {
+                var client = new HttpClient();
+                client.SetBearerToken(this.Token);
+                var result = await client.GetStringAsync(apiUrl);
+
+                return result;
+            }
+            else
+            {
+                return "{\"error\":\"token获取失败！\"}";
+            }
+        }
+        
         //证书处理
         private static bool RemoteCertificateValidate(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors error)
         {

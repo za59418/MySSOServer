@@ -10,13 +10,16 @@ namespace SSOApi.Controller
         public dynamic Get()
         {
             var principal = User as ClaimsPrincipal;
+            var claim = principal.Identities.First().FindFirst("userinfo");
+            return claim.Value;
 
-            return from c in principal.Identities.First().Claims
-                   select new
-                   {
-                       c.Type,
-                       c.Value
-                   };
+            //return from c in 
+            //return principal.Identities.First().FindFirst("userinfo"); //.Claims
+            //select new
+            //{
+            //    c.Type,
+            //    c.Value
+            //};
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using DCI.SSO.ClientLib;
 
 namespace MVCClient.Controllers
 {
@@ -52,13 +53,7 @@ namespace MVCClient.Controllers
         public async Task<ActionResult> CallApi()
         {
             var token = (User as ClaimsPrincipal).FindFirst("access_token").Value;
-
-            var client = new HttpClient();
-            client.SetBearerToken(token);
-
-            var result = await client.GetStringAsync("http://192.168.1.115/api/user");
-            ViewBag.Json = JArray.Parse(result.ToString());
-
+            ViewBag.Json = await SSOProvider.GetUser(token, "http://192.168.1.115/api/user");
             return View();
         }
     }
