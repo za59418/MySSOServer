@@ -267,6 +267,7 @@
     <Compile Include="Db\SYSTEMINFO.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Db\UserHelper.cs" />
     <Compile Include="Db\USERINFO.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
@@ -279,6 +280,7 @@
     <Compile Include="Db\USER_DEPARTMENT.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Db\Utils.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
