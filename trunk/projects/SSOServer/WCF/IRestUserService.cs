@@ -15,34 +15,34 @@ namespace SSOServer
         [WebGet(UriTemplate = Routing.GetToken, BodyStyle = WebMessageBodyStyle.Bare)]
         string GetToken(string UserName, string Password);
 
-        //[OperationContract]
-        //[WebGet(UriTemplate = Routing.GetTokenWithType, BodyStyle = WebMessageBodyStyle.Bare)]
-        //string GetTokenWithType(string UserName, string Password, string Type);
+        [OperationContract]
+        [WebGet(UriTemplate = Routing.GetTokenWithType, BodyStyle = WebMessageBodyStyle.Bare)]
+        string GetTokenWithType(string UserName, string Password, string Type);
 
-        //[OperationContract]
-        //[WebGet(UriTemplate = Routing.GetUserInfo, BodyStyle = WebMessageBodyStyle.Bare)]
-        //string GetUserInfo(string UserId);
+        [OperationContract]
+        [WebGet(UriTemplate = Routing.GetUserInfo, BodyStyle = WebMessageBodyStyle.Bare)]
+        string GetUserInfo(string UserId);
 
-        //[OperationContract]
-        //[WebGet(UriTemplate = Routing.Login, BodyStyle = WebMessageBodyStyle.Bare)]
-        //string Login(string UserName, string Password);
+        [OperationContract]
+        [WebGet(UriTemplate = Routing.Login, BodyStyle = WebMessageBodyStyle.Bare)]
+        string Login(string UserName, string Password);
 
-        //[OperationContract]
-        //[WebGet(UriTemplate = Routing.LoginWithToken, BodyStyle = WebMessageBodyStyle.Bare)]
-        //string LoginWithToken(string Token);
+        [OperationContract]
+        [WebGet(UriTemplate = Routing.LoginWithToken, BodyStyle = WebMessageBodyStyle.Bare)]
+        string LoginWithToken(string Token);
 
-        //[OperationContract]
-        //[WebGet(UriTemplate = Routing.AddUser, BodyStyle = WebMessageBodyStyle.Bare)]
-        //string AddUser(string Token, string UserName, string DisplayName, string ShortName, string Password, string Email);
-        //[OperationContract]
-        //[WebGet(UriTemplate = Routing.UpdateUser, BodyStyle = WebMessageBodyStyle.Bare)]
-        //string UpdateUser(string Token, string UserId, string UserName, string DisplayName, string ShortName, string Email, string Description, string UserType, string IsLockedOut);
-        //[OperationContract]
-        //[WebGet(UriTemplate = Routing.DelUser, BodyStyle = WebMessageBodyStyle.Bare)]
-        //string DelUser(string Token, string UserId);
-        //[OperationContract]
-        //[WebGet(UriTemplate = Routing.ChangePwd, BodyStyle = WebMessageBodyStyle.Bare)]
-        //string ChangePwd(string Token, string Password);
+        [OperationContract]
+        [WebGet(UriTemplate = Routing.AddUser, BodyStyle = WebMessageBodyStyle.Bare)]
+        string AddUser(string Token, string UserName, string DisplayName, string ShortName, string Password, string Email);
+        [OperationContract]
+        [WebGet(UriTemplate = Routing.UpdateUser, BodyStyle = WebMessageBodyStyle.Bare)]
+        string UpdateUser(string Token, string UserId, string UserName, string DisplayName, string ShortName, string Email, string Description, string UserType, string IsLockedOut);
+        [OperationContract]
+        [WebGet(UriTemplate = Routing.DelUser, BodyStyle = WebMessageBodyStyle.Bare)]
+        string DelUser(string Token, string UserId);
+        [OperationContract]
+        [WebGet(UriTemplate = Routing.ChangePwd, BodyStyle = WebMessageBodyStyle.Bare)]
+        string ChangePwd(string Token, string Password);
     }
     partial class Routing
     {
