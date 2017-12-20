@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "JSClient", "projects\JSClient", "{35411AB7-FEE2-420A-B2AB-9AB97C586B57}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "JSClient", "projects\JSClient\", "{35411AB7-FEE2-420A-B2AB-9AB97C586B57}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_5607"
@@ -32,6 +32,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSOApi", "projects\SSOApi\SSOApi.csproj", "{C27F4A56-FE09-45A9-9C73-DBA979E11BE8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinformClient", "projects\WinformClient\WinformClient.csproj", "{C8CF15CD-7149-4A3C-9269-75DD1B8EB27F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{70B273CB-6508-4E9F-AC2B-3146F79C8DB8} = {70B273CB-6508-4E9F-AC2B-3146F79C8DB8}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSOServer", "projects\SSOServer\SSOServer.csproj", "{70B273CB-6508-4E9F-AC2B-3146F79C8DB8}"
 EndProject
