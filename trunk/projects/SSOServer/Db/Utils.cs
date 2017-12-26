@@ -15,7 +15,7 @@ namespace SSOServer.Db
         {
             Base64Encoder base64 = new Base64Encoder();
             var ss = (byte[])MYMD5.md5(str, true, Encoding.Unicode);
-            return base64.GetEncoded((byte[])MYMD5.md5(str, true, Encoding.Unicode));
+            return base64.GetEncoded(ss);
         }
 
 
