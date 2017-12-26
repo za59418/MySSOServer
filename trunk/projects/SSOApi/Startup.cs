@@ -4,6 +4,7 @@ using Owin;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
 using System.Net;
+using System.Configuration;
 using System.Net.Security;
 using Microsoft.Owin.Security.OpenIdConnect;
 using System.Security.Claims;
@@ -19,12 +20,13 @@ namespace SSOApi
         {
             //证书处理
             ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidate;
-
             JwtSecurityTokenHandler.InboundClaimTypeMap.Clear();
 
+            //从配置文件中读取单点登陆服务器地址
+            string ssoServer = ConfigurationManager.AppSettings["ssoServer"].ToString();
             app.UseIdentityServerBearerTokenAuthentication(new IdentityServerBearerTokenAuthenticationOptions
             {
-                Authority = "https://192.168.1.115:44319/identity",
+                Authority = ssoServer,
                 RequiredScopes = new[] { "logon" },
 
                 // client credentials for the introspection endpoint
