@@ -22,9 +22,9 @@ namespace SSOServer
                     {
                         InMemoryUser u = new InMemoryUser
                         {
+                            Subject = user.USERID.ToString(),
                             Username = user.USERNAME,
                             Password = user.PASSWORD,
-                            Subject = "1",
                             Claims = new[]
                             {
                                 new Claim("userinfo", Newtonsoft.Json.JsonConvert.SerializeObject(user))
