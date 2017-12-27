@@ -39,28 +39,20 @@
                 </div>
             </div>
             <div class="row">
-                @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-                {
-                    <div class="alert alert-danger">
-                        <strong>Error:</strong>
-                        @Model.ErrorMessage
-                    </div>
-                }
-
                 <div class="col-md-4 col-md-offset-4">
-                    <div class="account-box"  style="height:230px;">
+                    <div class="account-box" style="height:230px;">
                         <form name="form" method="post" action="@Model.LoginUrl">
                             <input type="hidden" name="@Model.AntiForgery.Name" value="@Model.AntiForgery.Value" />
 
                             <div class="form-group">
                                 <!--a href="#" class="pull-right label-forgot">Forgot email?</a-->
                                 <label for="inputUsernameEmail">用户名</label>
-                                <input required id="username" name="username" type="text"     class="form-control" placeholder="请输入用户名" maxlength="100" data-mailcheckfield=".email-suggestion" autofocus value="@Model.Username" @(ViewBag.DisableUserNameChange == true ? "readonly='readonly'" : "")>
+                                <input required id="username" name="username" type="text" class="form-control" placeholder="请输入用户名" maxlength="100" data-mailcheckfield=".email-suggestion" autofocus value="@Model.Username" @(ViewBag.DisableUserNameChange == true ? "readonly='readonly'" : "")>
                             </div>
                             <div class="form-group">
                                 <!--a href="#" class="pull-right label-forgot">Forgot password?</a-->
                                 <label for="inputPassword">密码</label>
-                                <input required id="password" name="password" type="password" class="form-control" placeholder="请输入密码"   maxlength="100" autocomplete="off">
+                                <input required id="password" name="password" type="password" class="form-control" placeholder="请输入密码" maxlength="100" autocomplete="off">
                             </div>
                             @if (Model.AllowRememberMe)
                             {
@@ -71,7 +63,7 @@
                                 </div>
                             }
 
-                            <button  type="submit" class="btn btn btn-primary pull-right" id="login" ng-disabled="form.$invalid">
+                            <button type="submit" class="btn btn btn-primary pull-right" id="login" ng-disabled="form.$invalid">
                                 登 录
                             </button>
                         </form>
@@ -107,6 +99,15 @@
                             </div>
                         }
                     </div>
+                </div>
+                <div class="col-md-4 col-md-offset-4">
+                    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong>
+                            @Model.ErrorMessage
+                        </div>
+                    }
                 </div>
             </div>
         </div>
