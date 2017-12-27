@@ -45,8 +45,8 @@ namespace SSOServer.Db
 
                 if (null != user)
                 {
-                    //if (user.PASSWORD == Utils.md5Unicodebase64(Password))
-                    if (user.PASSWORD == Password)
+                    if (user.PASSWORD == Utils.md5Unicodebase64(Password))
+                    //if (user.PASSWORD == Password)
                         return user;
                 }
             }
