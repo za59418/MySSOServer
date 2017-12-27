@@ -55,12 +55,12 @@
                             <div class="form-group">
                                 <!--a href="#" class="pull-right label-forgot">Forgot email?</a-->
                                 <label for="inputUsernameEmail">用户名</label>
-                                <input required name="username" data-mailcheckfield=".email-suggestion" autofocus id="username" type="text" ng-model="model.username" class="form-control" placeholder="请输入用户名" value="@Model.Username" maxlength="100" @(ViewBag.DisableUserNameChange == true ? "readonly='readonly'" : "")>
+                                <input required id="username" name="username" type="text"     class="form-control" placeholder="请输入用户名" maxlength="100" data-mailcheckfield=".email-suggestion" autofocus value="@Model.Username" @(ViewBag.DisableUserNameChange == true ? "readonly='readonly'" : "")>
                             </div>
                             <div class="form-group">
                                 <!--a href="#" class="pull-right label-forgot">Forgot password?</a-->
                                 <label for="inputPassword">密码</label>
-                                <input required id="password" name="password" type="password" class="form-control" placeholder="请输入密码" ng-model="model.password" maxlength="100" autocomplete="off">
+                                <input required id="password" name="password" type="password" class="form-control" placeholder="请输入密码"   maxlength="100" autocomplete="off">
                             </div>
                             @if (Model.AllowRememberMe)
                             {

@@ -284,6 +284,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Services\LoginUserService.cs" />
     <Compile Include="WCF\IUserService.cs" />
     <Compile Include="Models\Cert.cs" />
     <Compile Include="Models\Clients.cs" />

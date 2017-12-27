@@ -42,8 +42,10 @@ namespace SSOServer
                         .UseInMemoryClients(Clients.Get())
                         .UseInMemoryScopes(Scopes.Get());
 
-            // Use the Mvc View Service instead of the default
+            // 页面服务
             factory.ViewService = new Registration<IViewService, MvcViewService<LogonWorkflowController>>();
+            // 用户服务
+            factory.UserService = new Registration<IdentityServer3.Core.Services.IUserService, LoginUserService>();
 
             // These registrations are also needed since these are dealt with using non-standard construction
             factory.Register(new Registration<HttpContext>(resolver => HttpContext.Current));
